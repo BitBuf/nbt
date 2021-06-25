@@ -3,7 +3,7 @@ package dev.dewy.nbt.tags.array;
 import dev.dewy.nbt.Tag;
 
 /**
- * Interface for an array NBT tag implementation.
+ * Interface for an NBT array tag implementation.
  *
  * @author dewy
  */
