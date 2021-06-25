@@ -64,7 +64,7 @@ public class LongArrayTag implements ArrayTag {
     /**
      * Sets the long array value contained inside the tag.
      *
-     * @param value The new value contained inside this tag.
+     * @param value The new value to be contained inside this tag.
      */
     public void setValue(long[] value) {
         if (value == null) {

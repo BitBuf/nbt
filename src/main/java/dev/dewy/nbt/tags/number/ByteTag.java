@@ -34,7 +34,7 @@ public class ByteTag implements NumberTag {
     /**
      * Sets the byte value contained inside the tag.
      *
-     * @param value The new value contained inside this tag.
+     * @param value The new value to be contained inside this tag.
      */
     public void setValue(byte value) {
         this.value = value;

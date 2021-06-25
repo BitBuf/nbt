@@ -34,7 +34,7 @@ public class ShortTag implements NumberTag {
     /**
      * Sets the short value contained inside the tag.
      *
-     * @param value The new value contained inside this tag.
+     * @param value The new value to be contained inside this tag.
      */
     public void setValue(short value) {
         this.value = value;

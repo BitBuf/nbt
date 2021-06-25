@@ -34,7 +34,7 @@ public class DoubleTag implements NumberTag {
     /**
      * Sets the double value contained inside the tag.
      *
-     * @param value The new value contained inside this tag.
+     * @param value The new value to be contained inside this tag.
      */
     public void setValue(double value) {
         this.value = value;
