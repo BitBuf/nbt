@@ -5,6 +5,7 @@ import dev.dewy.nbt.TagType;
 
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +15,13 @@ import java.util.List;
  */
 public class ListTag implements Tag {
     private List<? extends Tag> value;
+
+    /**
+     * Constructs a new empty list tag.
+     */
+    public ListTag() {
+        this.value = new ArrayList<>();
+    }
 
     /**
      * Constructs a new list tag with a given value.

@@ -5,6 +5,7 @@ import dev.dewy.nbt.TagType;
 
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,6 +15,13 @@ import java.util.Map;
  */
 public class CompoundTag implements Tag {
     private Map<String, Tag> value;
+
+    /**
+     * Constructs a new empty compound tag.
+     */
+    public CompoundTag() {
+        this.value = new HashMap<>();
+    }
 
     /**
      * Constructs a new compound tag with a given value.
@@ -97,6 +105,107 @@ public class CompoundTag implements Tag {
         output.writeUTF(rootName);
 
         write(output);
+    }
+
+    /**
+     * Returns true if this compound tag contains no entries.
+     *
+     * @return True if this compound tag contains no entries.
+     */
+    public boolean isEmpty() {
+        return this.value.isEmpty();
+    }
+
+    /**
+     * Returns the number of entries in this compound tag.
+     *
+     * @return The number of entries in this compound tag.
+     */
+    public int size() {
+        return this.value.size();
+    }
+
+    /**
+     * Associates the specified tag value with the specified name in this compound tag.
+     * If the compound tag previously contained a mapping for the name, the old tag value is replaced by the specified tag value.
+     *
+     * @param name Name with which the specified tag value is to be associated.
+     * @param tag Tag value to be associated with the specified name.
+     * @return The previous tag value associated with name, or null if there was no mapping for name.
+     */
+    public Tag put(String name, Tag tag) {
+        if (name == null || tag == null) {
+            throw new IllegalArgumentException("Tag (name) must not be null to put.");
+        }
+
+        return this.value.put(name, tag);
+    }
+
+    /**
+     * If the specified name is not already associated with a tag value (or is mapped to null) associates
+     * it with the given tag value and returns null, else returns the current tag value. See Map.putIfAbsent.
+     *
+     * @param name Name with which the specified tag value is to be associated.
+     * @param tag Value to be associated with the specified tag.
+     * @return The previous tag value associated with the specified name, or null if there was no mapping for the name.
+     */
+    public Tag putIfAbsent(String name, Tag tag) {
+        if (name == null || tag == null) {
+            throw new IllegalArgumentException("Tag (name) must not be null to putIfAbsent.");
+        }
+
+        return this.value.putIfAbsent(name, tag);
+    }
+
+    /**
+     * Returns the value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated tag value is to be returned.
+     * @return The value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public Tag get(String name) {
+        return this.value.get(name);
+    }
+
+    /**
+     * Removes the mapping for a name from this compound tag if it is present.
+     *
+     * @param name Name whose mapping is to be removed from the compound tag.
+     * @return The previous value associated with name, or null if there was no mapping for name.
+     */
+    public Tag remove(String name) {
+        return this.value.remove(name);
+    }
+
+    /**
+     * Removes the entry for a specified named tag. Must be equal in its name and the tag itself to be removed.
+     *
+     * @param name Name with which the specified tag is associated.
+     * @param tag Tag expected to be associated with the specified name.
+     * @return True if the entry was removed.
+     */
+    public boolean remove(String name, Tag tag) {
+        return this.value.remove(name, tag);
+    }
+
+    /**
+     * Returns true if this compound tag contains a tag with the specified name.
+     *
+     * @param name The name whose presence is to be tested.
+     * @return True if this compound tag contains a tag with the specified name.
+     */
+    public boolean contains(String name) {
+        return this.value.containsKey(name);
+    }
+
+    /**
+     * Returns true if this compound tag contains the specified tag, regardless of its name.
+     *
+     * @param tag The tag whose presence is to be tested.
+     * @return True if this compound tag contains the specified tag, regardless of its name.
+     */
+    public boolean contains(Tag tag) {
+        return this.value.containsValue(tag);
     }
 
     @Override
