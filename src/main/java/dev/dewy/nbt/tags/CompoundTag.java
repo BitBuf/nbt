@@ -101,28 +101,13 @@ public class CompoundTag implements Tag {
     }
 
     /**
-     * Write the compound tag to a {@link DataOutput} stream as the root compound with no name of its own.
-     *
-     * @param output The stream to write to.
-     * @param root Whether or not to write the tag as the root compound.
-     * @throws IOException If any IO error occurs.
-     */
-    public void write(DataOutput output, boolean root) throws IOException {
-        if (root) {
-            write(output, "");
-        } else {
-            write(output);
-        }
-    }
-
-    /**
      * Write the compound tag to a {@link DataOutput} stream as the root compound with a name of its own.
      *
      * @param output The stream to write to.
      * @param rootName The root compound's name.
      * @throws IOException If any IO error occurs.
      */
-    public void write(DataOutput output, String rootName) throws IOException {
+    public void writeRoot(DataOutput output, String rootName) throws IOException {
         output.writeByte(TagType.COMPOUND.getId());
         output.writeUTF(rootName);
 
@@ -253,9 +238,22 @@ public class CompoundTag implements Tag {
     /**
      * Reads a root compound (full NBT structure) from a {@link DataInput} stream.
      *
+     * @param input The {@link DataInput} stream to read from.
+     * @throws IOException if any kind of IO error occurs.
+     * @return The root compound read from the {@link DataInput} stream.
+     */
+    public static CompoundTag readRoot(DataInput input) throws IOException {
+        return readNamedRoot(input).getRight();
+    }
+
+    /**
+     * Reads a root compound (full NBT structure) from a {@link DataInput} stream, with its name attached.
+     *
+     * @param input The {@link DataInput} stream to read from.
+     * @throws IOException if any kind of IO error occurs.
      * @return A {@link Pair} with the name of the root tag on the left and the root tag object on the right.
      */
-    public static Pair<String, CompoundTag> readRoot(DataInput input) throws IOException {
+    public static Pair<String, CompoundTag> readNamedRoot(DataInput input) throws IOException {
         if (input.readByte() != TagType.COMPOUND.getId()) {
             throw new IOException("Root tag must be a compound tag.");
         }

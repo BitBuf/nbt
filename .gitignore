@@ -1,3 +1,6 @@
+*.nbt
+*.nbtt
+
 ### Eclipse ###
 .metadata
 bin/

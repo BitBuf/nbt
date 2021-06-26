@@ -15,13 +15,13 @@ import java.util.List;
  *
  * @author dewy
  */
-public class ListTag implements Tag {
-    private List<? extends Tag> value;
+public class ListTag<T extends Tag> implements Tag {
+    private List<T> value;
 
     /**
      * Reads a {@link ListTag} from a {@link DataInput} stream.
      */
-    public static final ReadFunction<DataInput, ListTag> read = input -> {
+    public static final ReadFunction<DataInput, ListTag<? extends Tag>> read = input -> {
         List<Tag> tags = new ArrayList<>();
         TagType type = TagType.fromByte(input.readByte());
 
@@ -37,7 +37,7 @@ public class ListTag implements Tag {
             }
         }
 
-        return new ListTag(tags);
+        return new ListTag<>(tags);
     };
 
     /**
@@ -53,7 +53,7 @@ public class ListTag implements Tag {
      * @param value The value to be contained within the tag.
      * @throws IllegalArgumentException If the value parameter is null.
      */
-    public ListTag(List<? extends Tag> value) {
+    public ListTag(List<T> value) {
         if (value == null) {
             throw new IllegalArgumentException("Value of list tag cannot be null.");
         }
@@ -66,7 +66,7 @@ public class ListTag implements Tag {
      *
      * @return The list value contained inside the tag.
      */
-    public List<? extends Tag> getValue() {
+    public List<T> getValue() {
         return value;
     }
 
@@ -75,7 +75,7 @@ public class ListTag implements Tag {
      *
      * @param value The new list value to be contained inside this tag.
      */
-    public void setValue(List<? extends Tag> value) {
+    public void setValue(List<T> value) {
         if (value == null) {
             throw new IllegalArgumentException("Value of list tag cannot be null.");
         }
@@ -101,13 +101,13 @@ public class ListTag implements Tag {
         output.writeByte(type.getId());
         output.writeInt(this.value.size());
 
-        for (Tag tag : this.value) {
+        for (T tag : this.value) {
             tag.write(output);
         }
     }
 
     @Override
-    public ReadFunction<DataInput, ListTag> getReader() {
+    public ReadFunction<DataInput, ListTag<? extends Tag>> getReader() {
         return read;
     }
 
@@ -130,12 +130,52 @@ public class ListTag implements Tag {
     }
 
     /**
+     * Appends the specified tag to the end of this list tag.
+     *
+     * @param tag The tag to append.
+     * @return True, always.
+     */
+    public boolean add(T tag) {
+        return this.value.add(tag);
+    }
+
+    /**
+     * Inserts the specified tag at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param tag The tag to be inserted.
+     */
+    public void add(int index, T tag) {
+        this.value.add(index, tag);
+    }
+
+    /**
+     * Removes the first occurrence of the specified tag from this list, if it is present.
+     *
+     * @param tag The tag to remove.
+     * @return True if the list contained the specified tag.
+     */
+    public boolean remove(T tag) {
+        return this.value.remove(tag);
+    }
+
+    /**
+     * Removes the tag at the specified position in this list.
+     *
+     * @param index The index of the tag to be removed.
+     * @return The tag previously at the specified position.
+     */
+    public T remove(int index) {
+        return this.value.remove(index);
+    }
+
+    /**
      * Returns the tag at the specified position in this list.
      *
      * @param index Index of the tag to return.
      * @return The tag at the specified position in this list.
      */
-    public Tag get(int index) {
+    public T get(int index) {
         return this.value.get(index);
     }
 
@@ -145,7 +185,7 @@ public class ListTag implements Tag {
      * @param tag Tag whose presence is to be tested.
      * @return True if this list inside this tag contains the specified tag.
      */
-    public boolean contains(Tag tag) {
+    public boolean contains(T tag) {
         return this.value.contains(tag);
     }
 
@@ -155,16 +195,17 @@ public class ListTag implements Tag {
      * @param tag Tag to search for.
      * @return The index of the first occurrence of the specified tag in this list, or -1 if this list does not contain the tag.
      */
-    public int indexOf(Tag tag) {
+    public int indexOf(T tag) {
         return this.value.indexOf(tag);
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ListTag listTag = (ListTag) o;
+        ListTag<?> listTag = (ListTag<?>) o;
 
         return value.equals(listTag.value);
     }
