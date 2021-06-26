@@ -1,7 +1,9 @@
 package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,6 +16,19 @@ import java.util.Collection;
  */
 public class IntArrayTag implements ArrayTag {
     private int[] value;
+
+    /**
+     * Reads a {@link IntArrayTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, IntArrayTag> read = input ->{
+        int[] ints = new int[input.readInt()];
+
+        for (int i = 0; i <= ints.length - 1; i++) {
+            ints[i] = input.readInt();
+        }
+
+        return new IntArrayTag(ints);
+    };
 
     /**
      * Constructs a new int array tag with a given value.
@@ -86,6 +101,11 @@ public class IntArrayTag implements ArrayTag {
         for (int i : this.value) {
             output.writeInt(i);
         }
+    }
+
+    @Override
+    public ReadFunction<DataInput, IntArrayTag> getReader() {
+        return read;
     }
 
     @Override

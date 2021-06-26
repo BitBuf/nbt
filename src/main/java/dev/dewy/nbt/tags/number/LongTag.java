@@ -1,7 +1,9 @@
 package dev.dewy.nbt.tags.number;
 
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
@@ -12,6 +14,11 @@ import java.io.IOException;
  */
 public class LongTag implements NumberTag {
     private long value;
+
+    /**
+     * Reads a {@link LongTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, LongTag> read = input -> new LongTag(input.readLong());
 
     /**
      * Constructs a new long tag with a given value.
@@ -48,6 +55,11 @@ public class LongTag implements NumberTag {
     @Override
     public void write(DataOutput output) throws IOException {
         output.writeLong(this.value);
+    }
+
+    @Override
+    public ReadFunction<DataInput, LongTag> getReader() {
+        return read;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package dev.dewy.nbt;
 
+import dev.dewy.nbt.utils.ReadFunction;
+
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
@@ -23,4 +26,11 @@ public interface Tag {
      * @throws IOException If any IO error occurs.
      */
     void write(DataOutput output) throws IOException;
+
+    /**
+     * Returns the {@link ReadFunction} associated with the NBT tag.
+     *
+     * @return The {@link ReadFunction} associated with the NBT tag.
+     */
+    ReadFunction<DataInput, ? extends Tag> getReader();
 }

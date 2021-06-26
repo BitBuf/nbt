@@ -2,7 +2,9 @@ package dev.dewy.nbt.tags;
 
 import dev.dewy.nbt.Tag;
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +17,28 @@ import java.util.List;
  */
 public class ListTag implements Tag {
     private List<? extends Tag> value;
+
+    /**
+     * Reads a {@link ListTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, ListTag> read = input -> {
+        List<Tag> tags = new ArrayList<>();
+        TagType type = TagType.fromByte(input.readByte());
+
+        int length = input.readInt();
+
+        for (int i = 1; i <= length; i++) {
+            tags.add(ReadFunction.of(type).read(input));
+        }
+
+        for (Tag tag : tags) {
+            if (tag.getType() != type) {
+                throw new IOException("List tag must only contain the type of tag specified: " + type.getName());
+            }
+        }
+
+        return new ListTag(tags);
+    };
 
     /**
      * Constructs a new empty list tag.
@@ -80,6 +104,11 @@ public class ListTag implements Tag {
         for (Tag tag : this.value) {
             tag.write(output);
         }
+    }
+
+    @Override
+    public ReadFunction<DataInput, ListTag> getReader() {
+        return read;
     }
 
     /**

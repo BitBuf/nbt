@@ -1,7 +1,9 @@
 package dev.dewy.nbt.tags.number;
 
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
@@ -12,6 +14,11 @@ import java.io.IOException;
  */
 public class ShortTag implements NumberTag {
     private short value;
+
+    /**
+     * Reads a {@link ShortTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, ShortTag> read = input -> new ShortTag(input.readShort());
 
     /**
      * Constructs a new short tag with a given value.
@@ -48,6 +55,11 @@ public class ShortTag implements NumberTag {
     @Override
     public void write(DataOutput output) throws IOException {
         output.writeShort(this.value);
+    }
+
+    @Override
+    public ReadFunction<DataInput, ShortTag> getReader() {
+        return read;
     }
 
     @Override

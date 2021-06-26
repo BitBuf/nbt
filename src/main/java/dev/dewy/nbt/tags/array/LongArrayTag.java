@@ -1,7 +1,9 @@
 package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,6 +16,19 @@ import java.util.Collection;
  */
 public class LongArrayTag implements ArrayTag {
     private long[] value;
+
+    /**
+     * Reads a {@link LongArrayTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, LongArrayTag> read = input ->{
+        long[] longs = new long[input.readInt()];
+
+        for (int i = 0; i <= longs.length - 1; i++) {
+            longs[i] = input.readLong();
+        }
+
+        return new LongArrayTag(longs);
+    };
 
     /**
      * Constructs a new long array tag with a given value.
@@ -86,6 +101,11 @@ public class LongArrayTag implements ArrayTag {
         for (long l : this.value) {
             output.writeLong(l);
         }
+    }
+
+    @Override
+    public ReadFunction<DataInput, LongArrayTag> getReader() {
+        return read;
     }
 
     @Override

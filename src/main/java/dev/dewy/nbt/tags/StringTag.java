@@ -2,7 +2,9 @@ package dev.dewy.nbt.tags;
 
 import dev.dewy.nbt.Tag;
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,6 +16,11 @@ import java.nio.charset.StandardCharsets;
  */
 public class StringTag implements Tag {
     private String value;
+
+    /**
+     * Reads a {@link StringTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, StringTag> read = input -> new StringTag(input.readUTF());
 
     /**
      * Constructs a new string tag with a given value.
@@ -59,6 +66,11 @@ public class StringTag implements Tag {
     @Override
     public void write(DataOutput output) throws IOException {
         output.writeUTF(this.value);
+    }
+
+    @Override
+    public ReadFunction<DataInput, StringTag> getReader() {
+        return read;
     }
 
     /**

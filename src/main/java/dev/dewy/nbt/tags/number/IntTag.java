@@ -1,7 +1,9 @@
 package dev.dewy.nbt.tags.number;
 
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
@@ -12,6 +14,11 @@ import java.io.IOException;
  */
 public class IntTag implements NumberTag {
     private int value;
+
+    /**
+     * Reads a {@link IntTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, IntTag> read = input -> new IntTag(input.readInt());
 
     /**
      * Constructs a new int tag with a given value.
@@ -48,6 +55,11 @@ public class IntTag implements NumberTag {
     @Override
     public void write(DataOutput output) throws IOException {
         output.writeInt(this.value);
+    }
+
+    @Override
+    public ReadFunction<DataInput, IntTag> getReader() {
+        return read;
     }
 
     @Override

@@ -2,7 +2,10 @@ package dev.dewy.nbt.tags;
 
 import dev.dewy.nbt.Tag;
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.Pair;
+import dev.dewy.nbt.utils.ReadFunction;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,6 +18,25 @@ import java.util.Map;
  */
 public class CompoundTag implements Tag {
     private Map<String, Tag> value;
+
+    /**
+     * Reads a {@link CompoundTag} from a {@link DataInput} stream.
+     */
+    public static final ReadFunction<DataInput, CompoundTag> read = input -> {
+        Map<String, Tag> tags = new HashMap<>();
+
+        while (true) {
+            TagType type = TagType.fromByte(input.readByte());
+
+            if (type == TagType.END) { // 0x00 at the end of the tag
+                break;
+            }
+
+            tags.put(input.readUTF(), ReadFunction.of(type).read(input));
+        }
+
+        return new CompoundTag(tags);
+    };
 
     /**
      * Constructs a new empty compound tag.
@@ -105,6 +127,11 @@ public class CompoundTag implements Tag {
         output.writeUTF(rootName);
 
         write(output);
+    }
+
+    @Override
+    public ReadFunction<DataInput, CompoundTag> getReader() {
+        return read;
     }
 
     /**
@@ -221,5 +248,18 @@ public class CompoundTag implements Tag {
     @Override
     public int hashCode() {
         return value.hashCode();
+    }
+
+    /**
+     * Reads a root compound (full NBT structure) from a {@link DataInput} stream.
+     *
+     * @return A {@link Pair} with the name of the root tag on the left and the root tag object on the right.
+     */
+    public static Pair<String, CompoundTag> readRoot(DataInput input) throws IOException {
+        if (input.readByte() != TagType.COMPOUND.getId()) {
+            throw new IOException("Root tag must be a compound tag.");
+        }
+
+        return new Pair<>(input.readUTF(), read.read(input));
     }
 }
