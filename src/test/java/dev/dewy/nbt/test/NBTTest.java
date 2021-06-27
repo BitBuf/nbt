@@ -5,7 +5,7 @@ import dev.dewy.nbt.tags.ListTag;
 import dev.dewy.nbt.tags.StringTag;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.number.ShortTag;
-import dev.dewy.nbt.utils.Pair;
+import dev.dewy.nbt.utils.CompressionType;
 
 import java.io.*;
 import java.util.Arrays;
@@ -40,37 +40,36 @@ public class NBTTest {
 
         // Writing root compound to sample.nbt
 
-        try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("sample.nbt")))) {
-            root.writeRoot(out, "sample");
+        try {
+            root.writeRootToFile("sample", new File("sample.nbt"), CompressionType.GZIP);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void read() {
-        try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("sample.nbt")))) {
-            // Reading the root tag from sample.nbt
+        CompoundTag root;
 
-            CompoundTag root = CompoundTag.readRoot(in);
-
-            // Decompiling root tag contents.
-
-            ShortTag number = (ShortTag) root.get("number");
-            ByteArrayTag array = (ByteArrayTag) root.get("array");
-            StringTag string = (StringTag) root.get("string");
-            ListTag<StringTag> cheeses = (ListTag<StringTag>) root.get("cheeses");
-
-            // Printing them out.
-
-            System.out.println(number.getValue());
-            System.out.println(Arrays.toString(array.getValue()));
-            System.out.println(string.getValue());
-
-            for (StringTag s : cheeses.getValue()) {
-                System.out.println(s.getValue());
-            }
+        try {
+            root = CompoundTag.readRootFromFile(new File("sample.nbt"), CompressionType.GZIP);
         } catch (IOException e) {
             e.printStackTrace();
+            return;
+        }
+
+        ShortTag number = (ShortTag) root.get("number");
+        ByteArrayTag array = (ByteArrayTag) root.get("array");
+        StringTag string = (StringTag) root.get("string");
+        ListTag<StringTag> cheeses = (ListTag<StringTag>) root.get("cheeses");
+
+        // Printing them out.
+
+        System.out.println(number.getValue());
+        System.out.println(Arrays.toString(array.getValue()));
+        System.out.println(string.getValue());
+
+        for (StringTag s : cheeses) {
+            System.out.println(s.getValue());
         }
     }
 }

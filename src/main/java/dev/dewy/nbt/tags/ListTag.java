@@ -8,14 +8,17 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  * Implementation of the list tag.
  *
  * @author dewy
  */
-public class ListTag<T extends Tag> implements Tag {
+public class ListTag<T extends Tag> implements Tag, Iterable<T> {
     private List<T> value;
 
     /**
@@ -199,6 +202,20 @@ public class ListTag<T extends Tag> implements Tag {
         return this.value.indexOf(tag);
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        return this.value.iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        this.value.forEach(action);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+        return this.value.spliterator();
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -2,14 +2,15 @@ package dev.dewy.nbt.tags;
 
 import dev.dewy.nbt.Tag;
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.utils.CompressionType;
 import dev.dewy.nbt.utils.Pair;
 import dev.dewy.nbt.utils.ReadFunction;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Implementation of the compound tag. A map in its raw form.
@@ -112,6 +113,24 @@ public class CompoundTag implements Tag {
         output.writeUTF(rootName);
 
         write(output);
+    }
+
+    /**
+     * Write the compound tag to a {@link File} with a name of its own, using a given compression scheme.
+     *
+     * @param rootName The root compound's name.
+     * @param file The file to be written to.
+     * @param compression The compression to be applied.
+     * @throws IOException If any IO error occurs.
+     */
+    public void writeRootToFile(String rootName, File file, CompressionType compression) throws IOException {
+        DataOutputStream out = compression == CompressionType.GZIP
+                ? new DataOutputStream(new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(file))))
+                : new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+
+        writeRoot(out, rootName);
+
+        out.close();
     }
 
     @Override
@@ -259,5 +278,36 @@ public class CompoundTag implements Tag {
         }
 
         return new Pair<>(input.readUTF(), read.read(input));
+    }
+
+    /**
+     * Reads a root compound (full NBT structure) from a {@link File} with a given kind of compression.
+     *
+     * @param file The file to read from.
+     * @param compression The compression of the file.
+     * @throws IOException if any kind of IO error occurs.
+     * @return The root compound read from the file.
+     */
+    public static CompoundTag readRootFromFile(File file, CompressionType compression) throws IOException {
+        return readNamedRootFromFile(file, compression).getRight();
+    }
+
+    /**
+     * Reads a root compound (full NBT structure) from a {@link File} with a given kind of compression, with its name attached.
+     *
+     * @param file The file to read from.
+     * @param compression The compression of the file.
+     * @throws IOException if any kind of IO error occurs.
+     * @return A {@link Pair} with the name of the root tag on the left and the root tag object on the right.
+     */
+    public static Pair<String, CompoundTag> readNamedRootFromFile(File file, CompressionType compression) throws IOException {
+        DataInputStream in = compression == CompressionType.GZIP
+                ? new DataInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(file))))
+                : new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+
+        Pair<String, CompoundTag> result = readNamedRoot(in);
+
+        in.close();
+        return result;
     }
 }
