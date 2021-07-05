@@ -1,6 +1,7 @@
 plugins {
     id "java-library"
-    id "maven-publish"
+    id "maven"
+    id "signing"
 }
 
 group "dev.dewy"
@@ -22,12 +23,51 @@ artifacts {
     archives javadocJar
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
+signing {
+    if (project.hasProperty("signing.keyId")) {
+        sign configurations.archives
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name = "nbt"
+                description = "Basic library for reading and writing Minecraft's NBT format."
+                url = "https://github.com/iBuyMountainDew/nbt"
+
+                packaging "jar"
+
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "https://github.com/iBuyMountainDew/nbt/blob/main/LICENSE.md"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "dewy"
+                        name = "Dewy REDACTED"
+                        email = "dewy@dewy.dev"
+                    }
+                }
+
+                scm {
+                    connection "scm:git:git://github.com/iBuyMountainDew/nbt.git"
+                    developerConnection "scm:git:ssh://github.com/iBuyMountainDew/nbt.git"
+                    url "https://github.com/iBuyMountainDew/nbt/"
+                }
+            }
         }
     }
 }
