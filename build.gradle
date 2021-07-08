@@ -5,7 +5,7 @@ plugins {
 }
 
 group "dev.dewy"
-version "1.0.1"
+version "1.1.0"
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"

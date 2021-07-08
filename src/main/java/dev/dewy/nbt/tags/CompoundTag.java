@@ -441,6 +441,7 @@ public class CompoundTag implements Tag {
      * Returns the list tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
      *
      * @param name The name whose associated list tag value is to be returned.
+     * @param <T> The type of tag expected to be contained within the list.
      * @return The list tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
      */
     public <T extends Tag> ListTag<T> getList(String name) {
