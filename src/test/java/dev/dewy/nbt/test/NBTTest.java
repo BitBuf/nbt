@@ -1,5 +1,6 @@
 package dev.dewy.nbt.test;
 
+import dev.dewy.nbt.NbtReader;
 import dev.dewy.nbt.tags.CompoundTag;
 import dev.dewy.nbt.tags.ListTag;
 import dev.dewy.nbt.tags.StringTag;
@@ -7,7 +8,8 @@ import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.number.ShortTag;
 import dev.dewy.nbt.utils.CompressionType;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class NBTTest {
@@ -53,7 +55,7 @@ public class NBTTest {
         CompoundTag root;
 
         try {
-            root = CompoundTag.fromFile(new File("sample.nbt"), CompressionType.GZIP).getTag();
+            root = NbtReader.fromFile(new File("sample.nbt"), CompressionType.GZIP).getTag();
         } catch (IOException e) {
             e.printStackTrace();
             return;

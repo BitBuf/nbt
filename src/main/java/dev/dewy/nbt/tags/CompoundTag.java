@@ -13,7 +13,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -520,39 +519,5 @@ public class CompoundTag implements Tag {
     @Override
     public int hashCode() {
         return value.hashCode();
-    }
-
-    /**
-     * Reads a named root tag (full NBT structure) from a {@link DataInput} stream.
-     *
-     * @param input The {@link DataInput} stream to read from.
-     * @throws IOException if any kind of IO error occurs.
-     * @return The root tag.
-     */
-    public static RootTag fromStream(DataInput input) throws IOException {
-        if (input.readByte() != TagType.COMPOUND.getId()) {
-            throw new IOException("Root tag must be a compound tag.");
-        }
-
-        return new RootTag(input.readUTF(), read.read(input));
-    }
-
-    /**
-     * Reads a named root tag (full NBT structure) from a {@link File} with a given kind of compression.
-     *
-     * @param file The file to read from.
-     * @param compression The compression of the file.
-     * @throws IOException if any kind of IO error occurs.
-     * @return The root tag.
-     */
-    public static RootTag fromFile(File file, CompressionType compression) throws IOException {
-        DataInputStream in = compression == CompressionType.GZIP
-                ? new DataInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(file))))
-                : new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
-
-        RootTag result = fromStream(in);
-
-        in.close();
-        return result;
     }
 }
