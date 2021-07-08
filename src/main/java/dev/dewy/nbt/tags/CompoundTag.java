@@ -2,12 +2,16 @@ package dev.dewy.nbt.tags;
 
 import dev.dewy.nbt.Tag;
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.tags.array.ByteArrayTag;
+import dev.dewy.nbt.tags.array.IntArrayTag;
+import dev.dewy.nbt.tags.array.LongArrayTag;
+import dev.dewy.nbt.tags.number.*;
 import dev.dewy.nbt.utils.CompressionType;
-import dev.dewy.nbt.utils.Pair;
 import dev.dewy.nbt.utils.ReadFunction;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -166,10 +170,106 @@ public class CompoundTag implements Tag {
      */
     public Tag put(String name, Tag tag) {
         if (name == null || tag == null) {
-            throw new IllegalArgumentException("Tag (name) must not be null to put.");
+            throw new IllegalArgumentException("Tag or tag name must not be null to put.");
         }
 
         return this.value.put(name, tag);
+    }
+
+    public ByteTag putByte(String name, byte value) {
+        if (name == null) {
+            throw new IllegalArgumentException("Tag name must not be null to put.");
+        }
+
+        return (ByteTag) this.value.put(name, new ByteTag(value));
+    }
+
+    public ShortTag putShort(String name, short value) {
+        if (name == null) {
+            throw new IllegalArgumentException("Tag name must not be null to put.");
+        }
+
+        return (ShortTag) this.value.put(name, new ShortTag(value));
+    }
+
+    public IntTag putInt(String name, int value) {
+        if (name == null) {
+            throw new IllegalArgumentException("Tag name must not be null to put.");
+        }
+
+        return (IntTag) this.value.put(name, new IntTag(value));
+    }
+
+    public LongTag putLong(String name, long value) {
+        if (name == null) {
+            throw new IllegalArgumentException("Tag name must not be null to put.");
+        }
+
+        return (LongTag) this.value.put(name, new LongTag(value));
+    }
+
+    public FloatTag putFloat(String name, float value) {
+        if (name == null) {
+            throw new IllegalArgumentException("Tag name must not be null to put.");
+        }
+
+        return (FloatTag) this.value.put(name, new FloatTag(value));
+    }
+
+    public DoubleTag putDouble(String name, double value) {
+        if (name == null) {
+            throw new IllegalArgumentException("Tag name must not be null to put.");
+        }
+
+        return (DoubleTag) this.value.put(name, new DoubleTag(value));
+    }
+
+    public ByteArrayTag putByteArray(String name, byte[] value) {
+        if (name == null || value == null) {
+            throw new IllegalArgumentException("Value or tag name must not be null to put.");
+        }
+
+        return (ByteArrayTag) this.value.put(name, new ByteArrayTag(value));
+    }
+
+    public IntArrayTag putIntArray(String name, int[] value) {
+        if (name == null || value == null) {
+            throw new IllegalArgumentException("Value or tag name must not be null to put.");
+        }
+
+        return (IntArrayTag) this.value.put(name, new IntArrayTag(value));
+    }
+
+    public LongArrayTag putLongArray(String name, long[] value) {
+        if (name == null || value == null) {
+            throw new IllegalArgumentException("Value or tag name must not be null to put.");
+        }
+
+        return (LongArrayTag) this.value.put(name, new LongArrayTag(value));
+    }
+
+    public StringTag putString(String name, String value) {
+        if (name == null || value == null) {
+            throw new IllegalArgumentException("Value or tag name must not be null to put.");
+        }
+
+        return (StringTag) this.value.put(name, new StringTag(value));
+    }
+
+    public <T extends Tag> ListTag<T> putList(String name, List<T> value) {
+        if (name == null || value == null) {
+            throw new IllegalArgumentException("Value or tag name must not be null to put.");
+        }
+
+        return (ListTag<T>) this.value.put(name, new ListTag<>(value));
+    }
+
+    public CompoundTag putCompound(String name, Map<String, Tag> value) {
+        if (name == null || value == null) {
+            throw new IllegalArgumentException("Value or tag name must not be null to put.");
+        }
+
+        return (CompoundTag) this.value.put(name, new CompoundTag(value));
     }
 
     /**
@@ -196,6 +296,174 @@ public class CompoundTag implements Tag {
      */
     public Tag get(String name) {
         return this.value.get(name);
+    }
+
+    /**
+     * Returns the byte tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated byte tag value is to be returned.
+     * @return The byte tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public ByteTag getByte(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof ByteTag
+                ? (ByteTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the short tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated short tag value is to be returned.
+     * @return The short tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public ShortTag getShort(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof ShortTag
+                ? (ShortTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the int tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated int tag value is to be returned.
+     * @return The int tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public IntTag getInt(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof IntTag
+                ? (IntTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the long tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated long tag value is to be returned.
+     * @return The long tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public LongTag getLong(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof LongTag
+                ? (LongTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the float tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated float tag value is to be returned.
+     * @return The float tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public FloatTag getFloat(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof FloatTag
+                ? (FloatTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the double tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated double tag value is to be returned.
+     * @return The double tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public DoubleTag getDouble(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof DoubleTag
+                ? (DoubleTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the byte array tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated byte array tag value is to be returned.
+     * @return The byte array tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public ByteArrayTag getByteArray(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof ByteArrayTag
+                ? (ByteArrayTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the int array tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated int array tag value is to be returned.
+     * @return The int array tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public IntArrayTag getIntArray(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof IntArrayTag
+                ? (IntArrayTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the long array tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated long array tag value is to be returned.
+     * @return The long array tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public LongArrayTag getLongArray(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof LongArrayTag
+                ? (LongArrayTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the string tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated string tag value is to be returned.
+     * @return The string tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public StringTag getString(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof StringTag
+                ? (StringTag) tag
+                : null;
+    }
+
+    /**
+     * Returns the list tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated list tag value is to be returned.
+     * @return The list tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public <T extends Tag> ListTag<T> getList(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof ListTag
+                ? (ListTag<T>) tag
+                : null;
+    }
+
+    /**
+     * Returns the compound tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     *
+     * @param name The name whose associated compound tag value is to be returned.
+     * @return The compound tag value to which the specified name is mapped, or null if this compound tag contains no mapping for the name.
+     */
+    public CompoundTag getCompound(String name) {
+        Tag tag = this.get(name);
+
+        return this.get(name) instanceof CompoundTag
+                ? (CompoundTag) tag
+                : null;
     }
 
     /**
@@ -255,57 +523,34 @@ public class CompoundTag implements Tag {
     }
 
     /**
-     * Reads a root compound (full NBT structure) from a {@link DataInput} stream.
+     * Reads a named root tag (full NBT structure) from a {@link DataInput} stream.
      *
      * @param input The {@link DataInput} stream to read from.
      * @throws IOException if any kind of IO error occurs.
-     * @return The root compound read from the {@link DataInput} stream.
+     * @return The root tag.
      */
-    public static CompoundTag readRoot(DataInput input) throws IOException {
-        return readNamedRoot(input).getRight();
-    }
-
-    /**
-     * Reads a root compound (full NBT structure) from a {@link DataInput} stream, with its name attached.
-     *
-     * @param input The {@link DataInput} stream to read from.
-     * @throws IOException if any kind of IO error occurs.
-     * @return A {@link Pair} with the name of the root tag on the left and the root tag object on the right.
-     */
-    public static Pair<String, CompoundTag> readNamedRoot(DataInput input) throws IOException {
+    public static RootTag fromStream(DataInput input) throws IOException {
         if (input.readByte() != TagType.COMPOUND.getId()) {
             throw new IOException("Root tag must be a compound tag.");
         }
 
-        return new Pair<>(input.readUTF(), read.read(input));
+        return new RootTag(input.readUTF(), read.read(input));
     }
 
     /**
-     * Reads a root compound (full NBT structure) from a {@link File} with a given kind of compression.
+     * Reads a named root tag (full NBT structure) from a {@link File} with a given kind of compression.
      *
      * @param file The file to read from.
      * @param compression The compression of the file.
      * @throws IOException if any kind of IO error occurs.
-     * @return The root compound read from the file.
+     * @return The root tag.
      */
-    public static CompoundTag readRootFromFile(File file, CompressionType compression) throws IOException {
-        return readNamedRootFromFile(file, compression).getRight();
-    }
-
-    /**
-     * Reads a root compound (full NBT structure) from a {@link File} with a given kind of compression, with its name attached.
-     *
-     * @param file The file to read from.
-     * @param compression The compression of the file.
-     * @throws IOException if any kind of IO error occurs.
-     * @return A {@link Pair} with the name of the root tag on the left and the root tag object on the right.
-     */
-    public static Pair<String, CompoundTag> readNamedRootFromFile(File file, CompressionType compression) throws IOException {
+    public static RootTag fromFile(File file, CompressionType compression) throws IOException {
         DataInputStream in = compression == CompressionType.GZIP
                 ? new DataInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(file))))
                 : new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
 
-        Pair<String, CompoundTag> result = readNamedRoot(in);
+        RootTag result = fromStream(in);
 
         in.close();
         return result;

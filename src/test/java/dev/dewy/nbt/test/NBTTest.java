@@ -33,9 +33,11 @@ public class NBTTest {
 
         CompoundTag root = new CompoundTag();
 
-        root.put("number", new ShortTag(number));
-        root.put("array", new ByteArrayTag(array));
-        root.put("string", new StringTag("Here's some weird stuff --> '\"/'/\\'"));
+        root.putShort("number", number);
+        root.putByteArray("array", array);
+        root.putString("string", "Here's some weird stuff --> '\"/'/\\'");
+
+        // cheese is a ListTag, not a raw List, so we use put() instead of putList()
         root.put("cheeses", cheeses);
 
         // Writing root compound to sample.nbt
@@ -51,16 +53,16 @@ public class NBTTest {
         CompoundTag root;
 
         try {
-            root = CompoundTag.readRootFromFile(new File("sample.nbt"), CompressionType.GZIP);
+            root = CompoundTag.fromFile(new File("sample.nbt"), CompressionType.GZIP).getTag();
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
 
-        ShortTag number = (ShortTag) root.get("number");
-        ByteArrayTag array = (ByteArrayTag) root.get("array");
-        StringTag string = (StringTag) root.get("string");
-        ListTag<StringTag> cheeses = (ListTag<StringTag>) root.get("cheeses");
+        ShortTag number = root.getShort("number");
+        ByteArrayTag array = root.getByteArray("array");
+        StringTag string = root.getString("string");
+        ListTag<StringTag> cheeses = root.getList("cheeses");
 
         // Printing them out.
 
