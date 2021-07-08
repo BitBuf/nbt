@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.dewy:nbt:1.0.1"
+    implementation "dev.dewy:nbt:1.1.0"
 }
 ```
 
@@ -30,7 +30,7 @@ See the [NBTTest](src/test/java/dev/dewy/nbt/test/NBTTest.java) class for sample
 - SNBT (Stringified NBT) support for Java and Bedrock
 - BNBT (Bedrock NBT) support
 - ENBT (Extended NBT) format (missing data types e.g., double array) support
-- JSON Conversion
+- JSON (De)serialization
 
 ### License
 
