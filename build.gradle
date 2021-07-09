@@ -5,7 +5,7 @@ plugins {
 }
 
 group "dev.dewy"
-version "1.1.1"
+version "1.2.0"
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
@@ -65,7 +65,7 @@ uploadArchives {
                 scm {
                     connection "scm:git:git://github.com/iBuyMountainDew/nbt.git"
                     developerConnection "scm:git:ssh://github.com/iBuyMountainDew/nbt.git"
-                    url "https://github.com/iBuyMountainDew/nbt/"
+                    url "https://github.com/iBuyMountainDew/nbt"
                 }
             }
         }

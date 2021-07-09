@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.dewy:nbt:1.1.1"
+    implementation "dev.dewy:nbt:1.2.0"
 }
 ```
 
