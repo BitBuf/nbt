@@ -47,6 +47,8 @@ public class ListTag<T extends Tag> extends AbstractList<T> implements Tag, List
 
     /**
      * Constructs a new empty list tag.
+     *
+     * @param type The type of the items to be contained in the list.
      */
     public ListTag(TagType type) {
         this(new ArrayList<>(), type);
@@ -56,6 +58,7 @@ public class ListTag<T extends Tag> extends AbstractList<T> implements Tag, List
      * Constructs a new list tag with a given value.
      *
      * @param value The value to be contained within the tag.
+     * @param type The type of the items to be contained in the list.
      * @throws IllegalArgumentException If the value parameter is null.
      */
     public ListTag(List<T> value, TagType type) {
@@ -390,6 +393,7 @@ public class ListTag<T extends Tag> extends AbstractList<T> implements Tag, List
      * Appends the specified value to the end of this list tag.
      *
      * @param value The value to append.
+     * @param type The type of the items to be contained in the list.
      * @return True, always.
      */
     public boolean addList(List<? extends Tag> value, TagType type) {
@@ -402,6 +406,7 @@ public class ListTag<T extends Tag> extends AbstractList<T> implements Tag, List
      *
      * @param index Index at which the specified tag is to be inserted.
      * @param value The value to be inserted.
+     * @param type The type of the items to be contained in the list.
      */
     public void addList(int index, List<? extends Tag> value, TagType type) {
         verifyType(TagType.LIST);
