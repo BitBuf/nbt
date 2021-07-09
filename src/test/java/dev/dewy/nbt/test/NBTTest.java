@@ -1,6 +1,7 @@
 package dev.dewy.nbt.test;
 
 import dev.dewy.nbt.NbtReader;
+import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.tags.CompoundTag;
 import dev.dewy.nbt.tags.ListTag;
 import dev.dewy.nbt.tags.StringTag;
@@ -12,6 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * A large demonstration on how to use the library.
+ */
 public class NBTTest {
     public static void main(String[] args) {
         write();
@@ -24,12 +28,12 @@ public class NBTTest {
         short number = 3;
         byte[] array = new byte[]{3, -52, 123, -6};
 
-        ListTag<StringTag> cheeses = new ListTag<>();
+        ListTag<StringTag> cheeses = new ListTag<>(TagType.STRING);
 
-        cheeses.add(new StringTag("cheddar"));
-        cheeses.add(new StringTag("king slime"));
-        cheeses.add(new StringTag("blue"));
-        cheeses.add(new StringTag("american"));
+        cheeses.addString("cheddar");
+        cheeses.addString("king slime");
+        cheeses.addString("blue");
+        cheeses.addString("american");
 
         // Compilation into a single root compound.
 

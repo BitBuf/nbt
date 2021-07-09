@@ -2,15 +2,16 @@ package dev.dewy.nbt.tags;
 
 import dev.dewy.nbt.Tag;
 import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.tags.array.ByteArrayTag;
+import dev.dewy.nbt.tags.array.IntArrayTag;
+import dev.dewy.nbt.tags.array.LongArrayTag;
+import dev.dewy.nbt.tags.number.*;
 import dev.dewy.nbt.utils.ReadFunction;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -18,8 +19,9 @@ import java.util.function.Consumer;
  *
  * @author dewy
  */
-public class ListTag<T extends Tag> implements Tag, Iterable<T> {
-    private List<T> value;
+public class ListTag<T extends Tag> extends AbstractList<T> implements Tag, List<T>, RandomAccess, Cloneable {
+    private final List<T> value;
+    private TagType type;
 
     /**
      * Reads a {@link ListTag} from a {@link DataInput} stream.
@@ -40,14 +42,14 @@ public class ListTag<T extends Tag> implements Tag, Iterable<T> {
             }
         }
 
-        return new ListTag<>(tags);
+        return new ListTag<>(tags, type, false);
     };
 
     /**
      * Constructs a new empty list tag.
      */
-    public ListTag() {
-        this.value = new ArrayList<>();
+    public ListTag(TagType type) {
+        this(new ArrayList<>(), type);
     }
 
     /**
@@ -56,12 +58,21 @@ public class ListTag<T extends Tag> implements Tag, Iterable<T> {
      * @param value The value to be contained within the tag.
      * @throws IllegalArgumentException If the value parameter is null.
      */
-    public ListTag(List<T> value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of list tag cannot be null.");
+    public ListTag(List<T> value, TagType type) {
+        this(value, type, true);
+    }
+
+    private ListTag(List<T> value, TagType type, boolean manualInit) {
+        if (value == null || type == null) {
+            throw new IllegalArgumentException("Value / type of list tag cannot be null.");
+        }
+
+        if (type == TagType.END && manualInit) {
+            throw new IllegalArgumentException("Type of list cannot be END.");
         }
 
         this.value = value;
+        this.type = type;
     }
 
     /**
@@ -74,16 +85,12 @@ public class ListTag<T extends Tag> implements Tag, Iterable<T> {
     }
 
     /**
-     * Sets the list value contained inside the tag.
+     * Returns the tag type of the list's items.
      *
-     * @param value The new list value to be contained inside this tag.
+     * @return The tag type of the list's items.
      */
-    public void setValue(List<T> value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of list tag cannot be null.");
-        }
-
-        this.value = value;
+    public TagType getListType() {
+        return this.type;
     }
 
     @Override
@@ -93,11 +100,9 @@ public class ListTag<T extends Tag> implements Tag, Iterable<T> {
 
     @Override
     public void write(DataOutput output) throws IOException {
-        TagType type;
+        TagType type = this.type;
 
-        if (!this.value.isEmpty()) {
-            type = this.value.get(0).getType();
-        } else {
+        if (this.value.isEmpty()) {
             type = TagType.END;
         }
 
@@ -139,6 +144,10 @@ public class ListTag<T extends Tag> implements Tag, Iterable<T> {
      * @return True, always.
      */
     public boolean add(T tag) {
+        if (this.isEmpty()) {
+            this.type = tag.getType();
+        }
+
         return this.value.add(tag);
     }
 
@@ -149,7 +158,276 @@ public class ListTag<T extends Tag> implements Tag, Iterable<T> {
      * @param tag The tag to be inserted.
      */
     public void add(int index, T tag) {
+        if (this.isEmpty()) {
+            this.type = tag.getType();
+        }
+
         this.value.add(index, tag);
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addByte(byte value) {
+        verifyType(TagType.BYTE);
+        return this.add((T) new ByteTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addByte(int index, byte value) {
+        verifyType(TagType.BYTE);
+
+        this.add(index, (T) new ByteTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addShort(short value) {
+        verifyType(TagType.SHORT);
+        return this.add((T) new ShortTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addShort(int index, short value) {
+        verifyType(TagType.SHORT);
+        this.add(index, (T) new ShortTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addInt(int value) {
+        verifyType(TagType.INT);
+        return this.add((T) new IntTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addInt(int index, int value) {
+        verifyType(TagType.INT);
+        this.add(index, (T) new IntTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addLong(long value) {
+        verifyType(TagType.LONG);
+        return this.add((T) new LongTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addLong(int index, long value) {
+        verifyType(TagType.LONG);
+        this.add(index, (T) new LongTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addFloat(float value) {
+        verifyType(TagType.FLOAT);
+        return this.add((T) new FloatTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addFloat(int index, float value) {
+        verifyType(TagType.FLOAT);
+        this.add(index, (T) new FloatTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addDouble(double value) {
+        verifyType(TagType.DOUBLE);
+        return this.add((T) new DoubleTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addDouble(int index, double value) {
+        verifyType(TagType.DOUBLE);
+        this.add(index, (T) new DoubleTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addByteArray(byte[] value) {
+        verifyType(TagType.BYTE_ARRAY);
+        return this.add((T) new ByteArrayTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addByteArray(int index, byte[] value) {
+        verifyType(TagType.BYTE_ARRAY);
+        this.add(index, (T) new ByteArrayTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addIntArray(int[] value) {
+        verifyType(TagType.INT_ARRAY);
+        return this.add((T) new IntArrayTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addIntArray(int index, int[] value) {
+        verifyType(TagType.INT_ARRAY);
+        this.add(index, (T) new IntArrayTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addLongArray(long[] value) {
+        verifyType(TagType.LONG_ARRAY);
+        return this.add((T) new LongArrayTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addLongArray(int index, long[] value) {
+        verifyType(TagType.LONG_ARRAY);
+        this.add(index, (T) new LongArrayTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addString(String value) {
+        verifyType(TagType.STRING);
+        return this.add((T) new StringTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addString(int index, String value) {
+        verifyType(TagType.STRING);
+        this.add(index, (T) new StringTag(value));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addList(List<? extends Tag> value, TagType type) {
+        verifyType(TagType.LIST);
+        return this.add((T) new ListTag(value, type));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addList(int index, List<? extends Tag> value, TagType type) {
+        verifyType(TagType.LIST);
+        this.add(index, (T) new ListTag(value, type));
+    }
+
+    /**
+     * Appends the specified value to the end of this list tag.
+     *
+     * @param value The value to append.
+     * @return True, always.
+     */
+    public boolean addCompound(Map<String, Tag> value) {
+        verifyType(TagType.COMPOUND);
+        return this.add((T) new CompoundTag(value));
+    }
+
+    /**
+     * Inserts the specified value at the specified position in this list tag.
+     *
+     * @param index Index at which the specified tag is to be inserted.
+     * @param value The value to be inserted.
+     */
+    public void addCompound(int index, Map<String, Tag> value) {
+        verifyType(TagType.COMPOUND);
+        this.add(index, (T) new CompoundTag(value));
     }
 
     /**
@@ -230,5 +508,11 @@ public class ListTag<T extends Tag> implements Tag, Iterable<T> {
     @Override
     public int hashCode() {
         return value.hashCode();
+    }
+
+    private void verifyType(TagType potential) {
+        if (potential != this.type) {
+            throw new IllegalStateException("Cannot add " + potential.getName() + " to a " + this.type.getName() + " list tag.");
+        }
     }
 }

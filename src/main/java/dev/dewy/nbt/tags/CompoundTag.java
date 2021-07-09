@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Implementation of the compound tag. A map in its raw form.
+ * Implementation of the compound tag.
  *
  * @author dewy
  */
@@ -176,99 +176,51 @@ public class CompoundTag implements Tag {
     }
 
     public ByteTag putByte(String name, byte value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Tag name must not be null to put.");
-        }
-
-        return (ByteTag) this.value.put(name, new ByteTag(value));
+        return (ByteTag) this.put(name, new ByteTag(value));
     }
 
     public ShortTag putShort(String name, short value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Tag name must not be null to put.");
-        }
-
-        return (ShortTag) this.value.put(name, new ShortTag(value));
+        return (ShortTag) this.put(name, new ShortTag(value));
     }
 
     public IntTag putInt(String name, int value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Tag name must not be null to put.");
-        }
-
-        return (IntTag) this.value.put(name, new IntTag(value));
+        return (IntTag) this.put(name, new IntTag(value));
     }
 
     public LongTag putLong(String name, long value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Tag name must not be null to put.");
-        }
-
-        return (LongTag) this.value.put(name, new LongTag(value));
+        return (LongTag) this.put(name, new LongTag(value));
     }
 
     public FloatTag putFloat(String name, float value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Tag name must not be null to put.");
-        }
-
-        return (FloatTag) this.value.put(name, new FloatTag(value));
+        return (FloatTag) this.put(name, new FloatTag(value));
     }
 
     public DoubleTag putDouble(String name, double value) {
-        if (name == null) {
-            throw new IllegalArgumentException("Tag name must not be null to put.");
-        }
-
-        return (DoubleTag) this.value.put(name, new DoubleTag(value));
+        return (DoubleTag) this.put(name, new DoubleTag(value));
     }
 
     public ByteArrayTag putByteArray(String name, byte[] value) {
-        if (name == null || value == null) {
-            throw new IllegalArgumentException("Value or tag name must not be null to put.");
-        }
-
-        return (ByteArrayTag) this.value.put(name, new ByteArrayTag(value));
+        return (ByteArrayTag) this.put(name, new ByteArrayTag(value));
     }
 
     public IntArrayTag putIntArray(String name, int[] value) {
-        if (name == null || value == null) {
-            throw new IllegalArgumentException("Value or tag name must not be null to put.");
-        }
-
-        return (IntArrayTag) this.value.put(name, new IntArrayTag(value));
+        return (IntArrayTag) this.put(name, new IntArrayTag(value));
     }
 
     public LongArrayTag putLongArray(String name, long[] value) {
-        if (name == null || value == null) {
-            throw new IllegalArgumentException("Value or tag name must not be null to put.");
-        }
-
-        return (LongArrayTag) this.value.put(name, new LongArrayTag(value));
+        return (LongArrayTag) this.put(name, new LongArrayTag(value));
     }
 
     public StringTag putString(String name, String value) {
-        if (name == null || value == null) {
-            throw new IllegalArgumentException("Value or tag name must not be null to put.");
-        }
-
-        return (StringTag) this.value.put(name, new StringTag(value));
+        return (StringTag) this.put(name, new StringTag(value));
     }
 
-    public <T extends Tag> ListTag<T> putList(String name, List<T> value) {
-        if (name == null || value == null) {
-            throw new IllegalArgumentException("Value or tag name must not be null to put.");
-        }
-
-        return (ListTag<T>) this.value.put(name, new ListTag<>(value));
+    public <T extends Tag> ListTag<T> putList(String name, List<T> value, TagType listType) {
+        return (ListTag<T>) this.put(name, new ListTag<>(value, listType));
     }
 
     public CompoundTag putCompound(String name, Map<String, Tag> value) {
-        if (name == null || value == null) {
-            throw new IllegalArgumentException("Value or tag name must not be null to put.");
-        }
-
-        return (CompoundTag) this.value.put(name, new CompoundTag(value));
+        return (CompoundTag) this.put(name, new CompoundTag(value));
     }
 
     /**
