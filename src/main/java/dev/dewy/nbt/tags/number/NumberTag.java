@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.number;
 
-import dev.dewy.nbt.Tag;
+import dev.dewy.nbt.tags.Tag;
 
 /**
  * Interface for an NBT number tag implementation.

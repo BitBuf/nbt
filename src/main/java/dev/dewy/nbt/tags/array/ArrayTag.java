@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.Tag;
+import dev.dewy.nbt.tags.Tag;
 
 /**
  * Interface for an NBT array tag implementation.

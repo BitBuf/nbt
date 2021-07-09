@@ -1,6 +1,7 @@
-package dev.dewy.nbt;
+package dev.dewy.nbt.tags;
 
 import dev.dewy.nbt.utils.ReadFunction;
+import dev.dewy.nbt.utils.TagType;
 
 import java.io.DataInput;
 import java.io.DataOutput;

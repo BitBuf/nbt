@@ -16,12 +16,23 @@ dependencies {
 }
 ```
 
-See the [NBTTest](src/test/java/dev/dewy/nbt/test/NBTTest.java) class for sample usage.
+#### NBTReader Sample: Base64
+
+The NBTReader class can be used to easily (de)serialize NBT data:
+
+```java
+RootTag root = NbtReader.fromBase64("CgALaGVsbG8gd29ybGQDAAR0ZXN0AAAAAAA=");
+
+System.out.println(root.getName()); // hello world
+System.out.println(root.getCompound().getInt("test").getValue()); // 0
+```
+
+See the [NbtTest](src/test/java/dev/dewy/nbt/test/NbtTest.java) class for full sample usage.
 
 ### Features
 
 - Fully compliant with Mojang's "standards"
-- Small and lightweight
+- Small and lightweight (32Kb!)
 - Supports all Java edition NBT tags (including long array)
 - Intuitive and flexible reading and writing functionality
 

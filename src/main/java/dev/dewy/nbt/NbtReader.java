@@ -3,6 +3,7 @@ package dev.dewy.nbt;
 import dev.dewy.nbt.tags.CompoundTag;
 import dev.dewy.nbt.tags.RootTag;
 import dev.dewy.nbt.utils.CompressionType;
+import dev.dewy.nbt.utils.TagType;
 
 import java.io.*;
 import java.util.Base64;
@@ -28,14 +29,17 @@ public final class NbtReader {
      * Reads a named root tag (full NBT structure) from a {@link File} with a given kind of compression.
      *
      * @param file The file to read from.
-     * @param compression The compression of the file.
      * @throws IOException If any kind of IO error occurs.
      * @return The root tag.
      */
-    public static RootTag fromFile(File file, CompressionType compression) throws IOException {
-        DataInputStream in = compression == CompressionType.GZIP
-                ? new DataInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(file))))
-                : new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+    public static RootTag fromFile(File file) throws IOException {
+        DataInputStream in;
+
+        if (CompressionType.isGzipped(new FileInputStream(file))) {
+            in = new DataInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(file))));
+        } else {
+            in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+        }
 
         RootTag result = fromStream(in);
 

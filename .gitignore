@@ -1,5 +1,6 @@
 *.nbt
 *.nbtt
+!sample.nbt
 
 ### Eclipse ###
 .metadata

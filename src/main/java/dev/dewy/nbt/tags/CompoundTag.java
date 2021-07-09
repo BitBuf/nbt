@@ -1,19 +1,18 @@
 package dev.dewy.nbt.tags;
 
-import dev.dewy.nbt.Tag;
-import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
 import dev.dewy.nbt.tags.array.LongArrayTag;
 import dev.dewy.nbt.tags.number.*;
-import dev.dewy.nbt.utils.CompressionType;
 import dev.dewy.nbt.utils.ReadFunction;
+import dev.dewy.nbt.utils.TagType;
 
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * Implementation of the compound tag.
@@ -102,38 +101,6 @@ public class CompoundTag implements Tag {
         }
 
         output.writeByte(TagType.END.getId()); // 0x00
-    }
-
-    /**
-     * Write the compound tag to a {@link DataOutput} stream as the root compound with a name of its own.
-     *
-     * @param output The stream to write to.
-     * @param rootName The root compound's name.
-     * @throws IOException If any IO error occurs.
-     */
-    public void writeRoot(DataOutput output, String rootName) throws IOException {
-        output.writeByte(TagType.COMPOUND.getId());
-        output.writeUTF(rootName);
-
-        write(output);
-    }
-
-    /**
-     * Write the compound tag to a {@link File} with a name of its own, using a given compression scheme.
-     *
-     * @param rootName The root compound's name.
-     * @param file The file to be written to.
-     * @param compression The compression to be applied.
-     * @throws IOException If any IO error occurs.
-     */
-    public void writeRootToFile(String rootName, File file, CompressionType compression) throws IOException {
-        DataOutputStream out = compression == CompressionType.GZIP
-                ? new DataOutputStream(new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(file))))
-                : new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-
-        writeRoot(out, rootName);
-
-        out.close();
     }
 
     @Override

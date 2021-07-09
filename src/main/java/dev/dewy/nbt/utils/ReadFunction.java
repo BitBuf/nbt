@@ -1,10 +1,9 @@
 package dev.dewy.nbt.utils;
 
-import dev.dewy.nbt.Tag;
-import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.tags.CompoundTag;
 import dev.dewy.nbt.tags.ListTag;
 import dev.dewy.nbt.tags.StringTag;
+import dev.dewy.nbt.tags.Tag;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
 import dev.dewy.nbt.tags.array.LongArrayTag;

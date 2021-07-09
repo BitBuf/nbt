@@ -1,12 +1,11 @@
 package dev.dewy.nbt.tags;
 
-import dev.dewy.nbt.Tag;
-import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
 import dev.dewy.nbt.tags.array.LongArrayTag;
 import dev.dewy.nbt.tags.number.*;
 import dev.dewy.nbt.utils.ReadFunction;
+import dev.dewy.nbt.utils.TagType;
 
 import java.io.DataInput;
 import java.io.DataOutput;

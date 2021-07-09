@@ -1,4 +1,4 @@
-package dev.dewy.nbt;
+package dev.dewy.nbt.utils;
 
 import java.util.HashMap;
 import java.util.Map;
