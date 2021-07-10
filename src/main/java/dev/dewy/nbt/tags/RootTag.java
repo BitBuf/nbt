@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -70,16 +71,26 @@ public class RootTag {
     }
 
     /**
-     * Write the compound tag to a {@link File} with a name of its own, using a given compression scheme.
+     * Write the root tag to a {@link File} using a given compression scheme.
      *
      * @param file The file to be written to.
      * @param compression The compression to be applied.
      * @throws IOException If any IO error occurs.
      */
     public void toFile(File file, CompressionType compression) throws IOException {
-        DataOutputStream out = compression == CompressionType.GZIP
-                ? new DataOutputStream(new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(file))))
-                : new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(file));
+        DataOutputStream out = null;
+
+        switch (compression) {
+            case NONE:
+                out = new DataOutputStream(fos);
+                break;
+            case GZIP:
+                out = new DataOutputStream(new GZIPOutputStream(fos));
+                break;
+            case ZLIB:
+                out = new DataOutputStream(new DeflaterOutputStream(fos));
+        }
 
         this.toStream(out);
         out.close();

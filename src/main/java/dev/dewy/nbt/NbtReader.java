@@ -8,6 +8,7 @@ import dev.dewy.nbt.utils.TagType;
 import java.io.*;
 import java.util.Base64;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
 
 public final class NbtReader {
     /**
@@ -33,12 +34,21 @@ public final class NbtReader {
      * @return The root tag.
      */
     public static RootTag fromFile(File file) throws IOException {
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
         DataInputStream in;
 
-        if (CompressionType.isGzipped(new FileInputStream(file))) {
-            in = new DataInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(file))));
-        } else {
-            in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+        switch (CompressionType.getCompression(new FileInputStream(file))) {
+            case NONE:
+                in = new DataInputStream(bis);
+                break;
+            case GZIP:
+                in = new DataInputStream(new GZIPInputStream(bis));
+                break;
+            case ZLIB:
+                in = new DataInputStream(new InflaterInputStream(bis));
+                break;
+            default:
+                throw new IllegalStateException("Illegal compression type. This should never happen.");
         }
 
         RootTag result = fromStream(in);

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Defines the 13 different types of NBT tags there are.
+ * Defines the 13 (including END) different types of NBT tags there are.
  *
  * @author dewy
  */

@@ -30,8 +30,11 @@ public final class NbtTest {
         System.out.println(NbtReader.fromBase64("CgAGc2FtcGxlCwAEaW50cwAAAAMAAAAD////zQAAAAIIAAR1dWlkACAwMWYyMzc2ZTNjZTY0OGZlOGIzM2I1OGU1ZGI3N2VhOAgACHVzZXJuYW1lAAZkZXd5X18A").getName());
 
         // Working with NBT files.
-        root.toFile(new File("sample.nbt"), CompressionType.GZIP);
-        root = NbtReader.fromFile(new File("sample.nbt")); // Compression determined automatically.
-        System.out.println(root.toBase64());
+        root.toFile(new File("sample.nbt"), CompressionType.NONE);
+        root.toFile(new File("samplegzip.nbt"), CompressionType.GZIP);
+        root.toFile(new File("samplezlib.nbt"), CompressionType.ZLIB);
+
+        RootTag in = NbtReader.fromFile(new File("samplegzip.nbt")); // Compression determined automatically.
+        System.out.println(in.toBase64());
     }
 }

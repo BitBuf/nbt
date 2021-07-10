@@ -15,14 +15,21 @@ import java.io.IOException;
 /**
  * Represents a function which accepts a {@link DataInput} stream as an argument and reads an object from it.
  *
- * @param <T> The {@link DataInput} stream to read from.
- * @param <R> The object read from the stream.
+ * @param <S> The {@link DataInput} stream type to read from.
+ * @param <R> The type of object read from the stream.
  *
  * @author dewy
  */
 @FunctionalInterface
-public interface ReadFunction<T extends DataInput, R> {
-    R read(T t) throws IOException;
+public interface ReadFunction<S extends DataInput, R> {
+    /**
+     * Reads an object from a {@link DataInput}.
+     *
+     * @param s The {@link DataInput} stream to read from.
+     * @return An {@code R} object read from the stream.
+     * @throws IOException If an error occurs reading the object from the stream.
+     */
+    R read(S s) throws IOException;
 
     /**
      * Returns the read function for a given {@link TagType}.
