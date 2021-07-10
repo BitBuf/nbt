@@ -1,7 +1,4 @@
 <h1 align="center">
-  <br>
-  <a href="https://github.com/iBuyMountainDew/nbt"><img height="256" src="https://i.imgur.com/zcgQqGf.png" alt="Devent - Dewy's Event System"></a>
-  <br>
   nbt
   <br>
 </h1>
