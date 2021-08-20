@@ -1,6 +1,8 @@
 package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.TagRegistry;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -8,6 +10,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class ByteArrayTag extends ArrayTag<Byte> {
     private @NonNull byte[] value;
 
