@@ -7,6 +7,18 @@ plugins {
 group "dev.dewy"
 version "1.2.0"
 
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:1.18.20"
+    annotationProcessor "org.projectlombok:lombok:1.18.20"
+
+    testCompileOnly "org.projectlombok:lombok:1.18.20"
+    testAnnotationProcessor "org.projectlombok:lombok:1.18.20"
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
     from sourceSets.main.allSource
