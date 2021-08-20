@@ -12,11 +12,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.projectlombok:lombok:1.18.20"
-    annotationProcessor "org.projectlombok:lombok:1.18.20"
+    implementation "org.apache.commons:commons-lang3:$lang3"
 
-    testCompileOnly "org.projectlombok:lombok:1.18.20"
-    testAnnotationProcessor "org.projectlombok:lombok:1.18.20"
+    compileOnly "org.projectlombok:lombok:$lombok"
+    annotationProcessor "org.projectlombok:lombok:$lombok"
+
+    testCompileOnly "org.projectlombok:lombok:$lombok"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombok"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
