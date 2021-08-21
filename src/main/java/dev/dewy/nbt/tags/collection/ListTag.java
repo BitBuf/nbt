@@ -4,6 +4,8 @@ import dev.dewy.nbt.tags.Tag;
 import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.exceptions.TagTypeRegistryException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.io.DataInput;
@@ -12,6 +14,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
     private List<@NonNull T> value;
     private byte type;
