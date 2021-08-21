@@ -9,10 +9,7 @@ import lombok.NonNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class CompoundTag extends Tag implements Iterable<Tag> {
@@ -57,7 +54,7 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
             throw new IOException("NBT structure too complex (depth > 512).");
         }
 
-        Map<@NonNull String, @NonNull Tag> tags = new HashMap<>();
+        Map<@NonNull String, @NonNull Tag> tags = new LinkedHashMap<>();
 
         byte nextTypeId;
         Tag nextTag;
@@ -83,6 +80,42 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
         this.value = tags;
 
         return this;
+    }
+
+    public int size() {
+        return this.value.size();
+    }
+
+    public boolean isEmpty() {
+        return this.value.isEmpty();
+    }
+
+    public <T extends Tag> T put(@NonNull T tag) {
+        return (T) this.value.put(tag.getName(), tag);
+    }
+
+    public <T extends Tag> T remove(@NonNull String key) {
+        return (T) this.value.remove(key);
+    }
+
+    public <T extends Tag> T get(@NonNull String key) {
+        return (T) this.value.get(key);
+    }
+
+    public boolean contains(@NonNull String key) {
+        return this.value.containsKey(key);
+    }
+
+    public Collection<Tag> values() {
+        return this.value.values();
+    }
+
+    public Set<String> keySet() {
+        return this.value.keySet();
+    }
+
+    public void clear() {
+        this.value.clear();
     }
 
     @Override
