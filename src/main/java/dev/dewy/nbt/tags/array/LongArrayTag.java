@@ -1,6 +1,7 @@
 package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -21,8 +22,8 @@ public class LongArrayTag extends ArrayTag<Long> {
     }
 
     @Override
-    public byte getId() {
-        return 12;
+    public byte getTypeId() {
+        return TagType.LONG_ARRAY.getId();
     }
 
     @Override

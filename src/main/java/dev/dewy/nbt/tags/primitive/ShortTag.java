@@ -1,6 +1,7 @@
 package dev.dewy.nbt.tags.primitive;
 
 import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -19,8 +20,8 @@ public class ShortTag extends NumericalTag<Short> {
     }
 
     @Override
-    public byte getId() {
-        return 2;
+    public byte getTypeId() {
+        return TagType.SHORT.getId();
     }
 
     @Override

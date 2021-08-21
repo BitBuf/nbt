@@ -15,7 +15,7 @@ public abstract class Tag {
         this.name = name;
     }
 
-    public abstract byte getId();
+    public abstract byte getTypeId();
 
     public abstract Object getValue();
 

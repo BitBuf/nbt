@@ -2,6 +2,7 @@ package dev.dewy.nbt.tags.primitive;
 
 import dev.dewy.nbt.Tag;
 import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -21,8 +22,8 @@ public class StringTag extends Tag {
     }
 
     @Override
-    public byte getId() {
-        return 8;
+    public byte getTypeId() {
+        return TagType.STRING.getId();
     }
 
     @Override

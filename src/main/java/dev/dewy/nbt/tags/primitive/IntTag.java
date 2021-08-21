@@ -1,6 +1,7 @@
 package dev.dewy.nbt.tags.primitive;
 
 import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -19,8 +20,8 @@ public class IntTag extends NumericalTag<Integer> {
     }
 
     @Override
-    public byte getId() {
-        return 3;
+    public byte getTypeId() {
+        return TagType.INT.getId();
     }
 
     @Override
