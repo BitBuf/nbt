@@ -9,10 +9,7 @@ import lombok.NonNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
@@ -106,6 +103,75 @@ public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
         this.value = tags;
 
         return this;
+    }
+
+    public int size() {
+        return this.value.size();
+    }
+
+    public boolean isEmpty() {
+        return this.value.isEmpty();
+    }
+
+    public boolean add(@NonNull T tag) {
+        if (tag.getTypeId() != this.type) {
+            return false;
+        }
+
+        if (this.value.isEmpty()) {
+            this.type = tag.getTypeId();
+        }
+
+        return this.value.add(tag);
+    }
+
+    public void insert(int index, @NonNull T tag) {
+        if (tag.getTypeId() != this.type) {
+            return;
+        }
+
+        if (this.value.isEmpty()) {
+            this.type = tag.getTypeId();
+        }
+
+        this.value.add(index, tag);
+    }
+
+    public boolean remove(@NonNull T tag) {
+        boolean success = this.value.remove(tag);
+
+        if (this.value.isEmpty()) {
+            this.type = 0;
+        }
+
+        return success;
+    }
+
+    public T remove(int index) {
+        T previous = this.value.remove(index);
+
+        if (this.value.isEmpty()) {
+            this.type = 0;
+        }
+
+        return previous;
+    }
+
+    public T get(int index) {
+        return this.value.get(index);
+    }
+
+    public boolean contains(@NonNull T tag) {
+        return this.value.contains(tag);
+    }
+
+    public boolean containsAll(@NonNull Collection<T> tags) {
+        return this.value.containsAll(tags);
+    }
+
+    public void clear() {
+        this.type = 0;
+        this.value.clear();
     }
 
     @Override
