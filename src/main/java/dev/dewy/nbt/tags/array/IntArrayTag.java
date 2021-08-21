@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -36,7 +36,7 @@ public class IntArrayTag extends ArrayTag<Integer> {
     }
 
     @Override
-    public void write(DataOutput output, int depth, TagRegistry registry) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeInt(this.value.length);
 
         for (int i : this.value) {
@@ -45,7 +45,7 @@ public class IntArrayTag extends ArrayTag<Integer> {
     }
 
     @Override
-    public IntArrayTag read(DataInput input, int depth, TagRegistry registry) throws IOException {
+    public IntArrayTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = new int[input.readInt()];
 
         for (int i = 0; i < this.value.length; i++) {

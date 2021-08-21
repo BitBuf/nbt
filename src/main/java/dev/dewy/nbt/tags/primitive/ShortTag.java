@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.primitive;
 
-import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,12 +34,12 @@ public class ShortTag extends NumericalTag<Short> {
     }
 
     @Override
-    public void write(DataOutput output, int depth, TagRegistry registry) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeShort(this.value);
     }
 
     @Override
-    public ShortTag read(DataInput input, int depth, TagRegistry registry) throws IOException {
+    public ShortTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readShort();
 
         return this;

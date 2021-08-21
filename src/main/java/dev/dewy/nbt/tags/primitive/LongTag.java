@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.primitive;
 
-import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,12 +34,12 @@ public class LongTag extends NumericalTag<Long> {
     }
 
     @Override
-    public void write(DataOutput output, int depth, TagRegistry registry) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeLong(this.value);
     }
 
     @Override
-    public LongTag read(DataInput input, int depth, TagRegistry registry) throws IOException {
+    public LongTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readLong();
 
         return this;

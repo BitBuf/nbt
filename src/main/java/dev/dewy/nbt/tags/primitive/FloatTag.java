@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.primitive;
 
-import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,12 +34,12 @@ public class FloatTag extends NumericalTag<Float> {
     }
 
     @Override
-    public void write(DataOutput output, int depth, TagRegistry registry) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeFloat(this.value);
     }
 
     @Override
-    public FloatTag read(DataInput input, int depth, TagRegistry registry) throws IOException {
+    public FloatTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readFloat();
 
         return this;

@@ -19,7 +19,7 @@ public abstract class Tag {
 
     public abstract Object getValue();
 
-    public abstract void write(DataOutput output, int depth, TagRegistry registry) throws IOException;
+    public abstract void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException;
 
-    public abstract Tag read(DataInput input, int depth, TagRegistry registry) throws IOException;
+    public abstract Tag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException;
 }

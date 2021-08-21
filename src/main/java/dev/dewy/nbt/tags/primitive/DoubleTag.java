@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.primitive;
 
-import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,12 +34,12 @@ public class DoubleTag extends NumericalTag<Double> {
     }
 
     @Override
-    public void write(DataOutput output, int depth, TagRegistry registry) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeDouble(this.value);
     }
 
     @Override
-    public DoubleTag read(DataInput input, int depth, TagRegistry registry) throws IOException {
+    public DoubleTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readDouble();
 
         return this;

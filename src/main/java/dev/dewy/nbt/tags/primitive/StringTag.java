@@ -1,7 +1,7 @@
 package dev.dewy.nbt.tags.primitive;
 
 import dev.dewy.nbt.Tag;
-import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -36,12 +36,12 @@ public class StringTag extends Tag {
     }
 
     @Override
-    public void write(DataOutput output, int depth, TagRegistry registry) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeUTF(this.value);
     }
 
     @Override
-    public StringTag read(DataInput input, int depth, TagRegistry registry) throws IOException {
+    public StringTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readUTF();
 
         return this;

@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.TagRegistry;
+import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -36,13 +36,13 @@ public class ByteArrayTag extends ArrayTag<Byte> {
     }
 
     @Override
-    public void write(DataOutput output, int depth, TagRegistry registry) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeInt(this.value.length);
         output.write(this.value);
     }
 
     @Override
-    public ByteArrayTag read(DataInput input, int depth, TagRegistry registry) throws IOException {
+    public ByteArrayTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         byte[] tmp = new byte[input.readInt()];
         input.readFully(tmp);
 
