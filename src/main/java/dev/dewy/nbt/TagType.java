@@ -2,8 +2,8 @@ package dev.dewy.nbt;
 
 import dev.dewy.nbt.exceptions.TagTypeRegistryException;
 
-import dev.dewy.nbt.tags.*;
 import dev.dewy.nbt.tags.array.*;
+import dev.dewy.nbt.tags.collection.*;
 import dev.dewy.nbt.tags.primitive.*;
 
 public enum TagType {

@@ -1,6 +1,6 @@
-package dev.dewy.nbt.tags;
+package dev.dewy.nbt.tags.collection;
 
-import dev.dewy.nbt.Tag;
+import dev.dewy.nbt.tags.Tag;
 import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.exceptions.TagTypeRegistryException;

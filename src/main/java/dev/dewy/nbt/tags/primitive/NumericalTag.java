@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.primitive;
 
-import dev.dewy.nbt.Tag;
+import dev.dewy.nbt.tags.Tag;
 
 public abstract class NumericalTag<T extends Number> extends Tag {
     @Override

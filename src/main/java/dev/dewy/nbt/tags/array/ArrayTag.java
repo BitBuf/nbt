@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.Tag;
+import dev.dewy.nbt.tags.Tag;
 
 public abstract class ArrayTag<T> extends Tag {
     public abstract int size();
