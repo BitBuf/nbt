@@ -192,4 +192,22 @@ public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
     public Spliterator<T> spliterator() {
         return this.value.spliterator();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ListTag<?> listTag = (ListTag<?>) o;
+
+        if (type != listTag.type) return false;
+        return Objects.equals(value, listTag.value);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + (int) type;
+        return result;
+    }
 }

@@ -44,4 +44,19 @@ public class IntTag extends NumericalTag<Integer> {
 
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IntTag intTag = (IntTag) o;
+
+        return value == intTag.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value;
+    }
 }

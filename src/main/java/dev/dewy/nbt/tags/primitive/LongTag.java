@@ -44,4 +44,19 @@ public class LongTag extends NumericalTag<Long> {
 
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LongTag longTag = (LongTag) o;
+
+        return value == longTag.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (value ^ (value >>> 32));
+    }
 }

@@ -107,7 +107,7 @@ public class Nbt {
     public void setTypeRegistry(@NonNull TagTypeRegistry typeRegistry) {
         this.typeRegistry = typeRegistry;
 
-        this.writer = new NbtWriter(typeRegistry);
-        this.reader = new NbtReader(typeRegistry);
+        this.writer.setTypeRegistry(typeRegistry);
+        this.reader.setTypeRegistry(typeRegistry);
     }
 }

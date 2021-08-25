@@ -10,6 +10,7 @@ import lombok.NonNull;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,5 +46,20 @@ public class StringTag extends Tag {
         this.value = input.readUTF();
 
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StringTag stringTag = (StringTag) o;
+
+        return Objects.equals(value, stringTag.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

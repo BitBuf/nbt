@@ -44,4 +44,20 @@ public class DoubleTag extends NumericalTag<Double> {
 
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DoubleTag doubleTag = (DoubleTag) o;
+
+        return Double.compare(doubleTag.value, value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        long temp = Double.doubleToLongBits(value);
+        return (int) (temp ^ (temp >>> 32));
+    }
 }
