@@ -92,11 +92,11 @@ public class Nbt {
         return result;
     }
 
-    public CompoundTag fromByteArray(byte[] bytes) throws IOException {
+    public CompoundTag fromByteArray(@NonNull byte[] bytes) throws IOException {
         return fromStream(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(bytes))));
     }
 
-    public CompoundTag fromBase64(String encoded) throws IOException {
+    public CompoundTag fromBase64(@NonNull String encoded) throws IOException {
         return fromByteArray(Base64.getDecoder().decode(encoded));
     }
 

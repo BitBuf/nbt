@@ -4,7 +4,8 @@ import dev.dewy.nbt.tags.collection.CompoundTag;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
-import java.io.*;
+import java.io.DataOutput;
+import java.io.IOException;
 
 @AllArgsConstructor
 public class NbtWriter {

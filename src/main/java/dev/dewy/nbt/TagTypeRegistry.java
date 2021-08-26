@@ -50,7 +50,7 @@ public class TagTypeRegistry {
         return this.registry.get(id);
     }
 
-    public Tag instantiate(Class<? extends Tag> clazz) throws TagTypeRegistryException {
+    public Tag instantiate(@NonNull Class<? extends Tag> clazz) throws TagTypeRegistryException {
         try {
             Constructor<? extends Tag> constructor = clazz.getDeclaredConstructor();
             constructor.setAccessible(true);
