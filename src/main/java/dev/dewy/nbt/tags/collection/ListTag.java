@@ -5,7 +5,6 @@ import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.exceptions.TagTypeRegistryException;
 import dev.dewy.nbt.tags.Tag;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.io.DataInput;
@@ -14,11 +13,18 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 
-@NoArgsConstructor
 @AllArgsConstructor
 public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
     private List<@NonNull T> value;
     private byte type;
+
+    public ListTag() {
+        this(null);
+    }
+
+    public ListTag(String name) {
+        this(name, new LinkedList<>());
+    }
 
     public ListTag(String name, @NonNull List<@NonNull T> value) {
         if (value.isEmpty()) {
@@ -118,24 +124,24 @@ public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
     }
 
     public boolean add(@NonNull T tag) {
-        if (tag.getTypeId() != this.type) {
-            return false;
-        }
-
         if (this.value.isEmpty()) {
             this.type = tag.getTypeId();
+        }
+
+        if (tag.getTypeId() != this.type) {
+            return false;
         }
 
         return this.value.add(tag);
     }
 
     public void insert(int index, @NonNull T tag) {
-        if (tag.getTypeId() != this.type) {
-            return;
-        }
-
         if (this.value.isEmpty()) {
             this.type = tag.getTypeId();
+        }
+
+        if (tag.getTypeId() != this.type) {
+            return;
         }
 
         this.value.add(index, tag);

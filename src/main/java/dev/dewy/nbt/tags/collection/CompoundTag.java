@@ -5,7 +5,6 @@ import dev.dewy.nbt.TagTypeRegistry;
 import dev.dewy.nbt.exceptions.TagTypeRegistryException;
 import dev.dewy.nbt.tags.Tag;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.io.DataInput;
@@ -14,10 +13,17 @@ import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 
-@NoArgsConstructor
 @AllArgsConstructor
 public class CompoundTag extends Tag implements Iterable<Tag> {
     private Map<@NonNull String, @NonNull Tag> value;
+
+    public CompoundTag() {
+        this(null, new LinkedHashMap<>());
+    }
+
+    public CompoundTag(String name) {
+        this(name, new LinkedHashMap<>());
+    }
 
     public CompoundTag(String name, @NonNull Map<@NonNull String, @NonNull Tag> value) {
         this.setName(name);
@@ -50,6 +56,8 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
 
             tag.write(output, depth + 1, registry);
         }
+
+        output.writeByte(0);
     }
 
     @Override
