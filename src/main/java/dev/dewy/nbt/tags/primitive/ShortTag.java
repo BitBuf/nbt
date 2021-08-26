@@ -4,6 +4,7 @@ import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.TagTypeRegistry;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -13,6 +14,14 @@ import java.io.IOException;
 @AllArgsConstructor
 public class ShortTag extends NumericalTag<Short> {
     private short value;
+
+    public ShortTag(@NonNull Number value) {
+        this(null, value);
+    }
+
+    public ShortTag(String name, @NonNull Number value) {
+        this(name, value.shortValue());
+    }
 
     public ShortTag(String name, short value) {
         this.setName(name);

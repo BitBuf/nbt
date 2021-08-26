@@ -4,6 +4,7 @@ import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.TagTypeRegistry;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -13,6 +14,14 @@ import java.io.IOException;
 @AllArgsConstructor
 public class ByteTag extends NumericalTag<Byte> {
     private byte value;
+
+    public ByteTag(@NonNull Number value) {
+        this(null, value);
+    }
+
+    public ByteTag(String name, @NonNull Number value) {
+        this(name, value.byteValue());
+    }
 
     public ByteTag(String name, byte value) {
         this.setName(name);
