@@ -2,6 +2,7 @@ package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.TagTypeRegistry;
+import dev.dewy.nbt.tags.primitive.LongTag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -12,11 +13,23 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * The long array tag (type ID 12) is used for storing {@code long[]} arrays in NBT structures.
+ * It is not stored as a list of {@link LongTag}s.
+ *
+ * @author dewy
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class LongArrayTag extends ArrayTag<Long> {
     private @NonNull long[] value;
 
+    /**
+     * Constructs a long array tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code long[]} value.
+     */
     public LongArrayTag(String name, @NonNull long[] value) {
         this.setName(name);
         this.setValue(value);
@@ -32,6 +45,11 @@ public class LongArrayTag extends ArrayTag<Long> {
         return this.value;
     }
 
+    /**
+     * Sets the {@code long[]} value of this long array tag.
+     *
+     * @param value new {@code long[]} value to be set.
+     */
     public void setValue(@NonNull long[] value) {
         this.value = value;
     }
@@ -67,13 +85,13 @@ public class LongArrayTag extends ArrayTag<Long> {
     }
 
     @Override
-    public Long set(int index, @NonNull Long newValue) {
-        return this.value[index] = newValue;
+    public Long set(int index, @NonNull Long element) {
+        return this.value[index] = element;
     }
 
     @Override
-    public void insert(int index, @NonNull Long... values) {
-        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(values));
+    public void insert(int index, @NonNull Long... elements) {
+        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(elements));
     }
 
     @Override

@@ -9,11 +9,22 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+/**
+ * The float tag (type ID 5) is used for storing a single-precision 32-bit IEEE 754 floating point value; a Java primitive {@code float}.
+ *
+ * @author dewy
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class FloatTag extends NumericalTag<Float> {
     private float value;
 
+    /**
+     * Constructs a float tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code float} value.
+     */
     public FloatTag(String name, float value) {
         this.setName(name);
         this.setValue(value);
@@ -29,6 +40,11 @@ public class FloatTag extends NumericalTag<Float> {
         return this.value;
     }
 
+    /**
+     * Sets the {@code float} value of this float tag.
+     *
+     * @param value new {@code float} value to be set.
+     */
     public void setValue(float value) {
         this.value = value;
     }

@@ -12,11 +12,22 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * The string tag (type ID 8) is used for storing a UTF-8 encoded {@code String}, prefixed by a length value stored as a 32-bit {@code int}.
+ *
+ * @author dewy
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class StringTag extends Tag {
     private @NonNull String value;
 
+    /**
+     * Constructs a string tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code String} value.
+     */
     public StringTag(String name, @NonNull String value) {
         this.setName(name);
         this.setValue(value);
@@ -32,6 +43,11 @@ public class StringTag extends Tag {
         return this.value;
     }
 
+    /**
+     * Sets the {@code String} value of this string tag.
+     *
+     * @param value new {@code String} value to be set.
+     */
     public void setValue(@NonNull String value) {
         this.value = value;
     }

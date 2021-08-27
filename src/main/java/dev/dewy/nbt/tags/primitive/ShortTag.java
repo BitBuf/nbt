@@ -10,19 +10,41 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+/**
+ * The short tag (type ID 2) is used for storing a 16-bit signed two's complement integer; a Java primitive {@code short}.
+ *
+ * @author dewy
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShortTag extends NumericalTag<Short> {
     private short value;
 
+    /**
+     * Constructs a short tag with a given value.
+     *
+     * @param value the tag's {@code Number} value, to be converted to {@code short}.
+     */
     public ShortTag(@NonNull Number value) {
         this(null, value);
     }
 
+    /**
+     * Constructs a short tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code Number} value, to be converted to {@code short}.
+     */
     public ShortTag(String name, @NonNull Number value) {
         this(name, value.shortValue());
     }
 
+    /**
+     * Constructs a short tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code short} value.
+     */
     public ShortTag(String name, short value) {
         this.setName(name);
         this.setValue(value);
@@ -38,6 +60,11 @@ public class ShortTag extends NumericalTag<Short> {
         return this.value;
     }
 
+    /**
+     * Sets the {@code short} value of this short tag.
+     *
+     * @param value new {@code short} value to be set.
+     */
     public void setValue(short value) {
         this.value = value;
     }

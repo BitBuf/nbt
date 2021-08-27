@@ -9,11 +9,22 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+/**
+ * The long tag (type ID 4) is used for storing a 64-bit signed two's complement integer; a Java primitive {@code long}.
+ *
+ * @author dewy
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class LongTag extends NumericalTag<Long> {
     private long value;
 
+    /**
+     * Constructs a long tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code long} value.
+     */
     public LongTag(String name, long value) {
         this.setName(name);
         this.setValue(value);
@@ -29,6 +40,11 @@ public class LongTag extends NumericalTag<Long> {
         return this.value;
     }
 
+    /**
+     * Sets the {@code long} value of this long tag.
+     *
+     * @param value new {@code long} value to be set.
+     */
     public void setValue(long value) {
         this.value = value;
     }

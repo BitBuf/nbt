@@ -8,18 +8,70 @@ import dev.dewy.nbt.tags.collection.CompoundTag;
 import dev.dewy.nbt.tags.collection.ListTag;
 import dev.dewy.nbt.tags.primitive.*;
 
+/**
+ * Defines the 12 standard NBT tag types and their IDs supported by this library, laid out in the Notchian spec.
+ *
+ * @author dewy
+ */
 public enum TagType {
+    /**
+     * @see ByteTag
+     */
     BYTE(1),
+
+    /**
+     * @see ShortTag
+     */
     SHORT(2),
+
+    /**
+     * @see IntTag
+     */
     INT(3),
+
+    /**
+     * @see LongTag
+     */
     LONG(4),
+
+    /**
+     * @see FloatTag
+     */
     FLOAT(5),
+
+    /**
+     * @see DoubleTag
+     */
     DOUBLE(6),
+
+    /**
+     * @see ByteArrayTag
+     */
     BYTE_ARRAY(7),
+
+    /**
+     * @see StringTag
+     */
     STRING(8),
+
+    /**
+     * @see ListTag
+     */
     LIST(9),
+
+    /**
+     * @see CompoundTag
+     */
     COMPOUND(10),
+
+    /**
+     * @see IntArrayTag
+     */
     INT_ARRAY(11),
+
+    /**
+     * @see LongArrayTag
+     */
     LONG_ARRAY(12);
 
     private final int id;

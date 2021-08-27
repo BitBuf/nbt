@@ -2,6 +2,7 @@ package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.TagTypeRegistry;
+import dev.dewy.nbt.tags.primitive.IntTag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -12,11 +13,23 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * The int array tag (type ID 11) is used for storing {@code int[]} arrays in NBT structures.
+ * It is not stored as a list of {@link IntTag}s.
+ *
+ * @author dewy
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class IntArrayTag extends ArrayTag<Integer> {
     private @NonNull int[] value;
 
+    /**
+     * Constructs an int array tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code int[]} value.
+     */
     public IntArrayTag(String name, @NonNull int[] value) {
         this.setName(name);
         this.setValue(value);
@@ -32,6 +45,11 @@ public class IntArrayTag extends ArrayTag<Integer> {
         return this.value;
     }
 
+    /**
+     * Sets the {@code int[]} value of this int array tag.
+     *
+     * @param value new {@code int[]} value to be set.
+     */
     public void setValue(@NonNull int[] value) {
         this.value = value;
     }
@@ -67,13 +85,13 @@ public class IntArrayTag extends ArrayTag<Integer> {
     }
 
     @Override
-    public Integer set(int index, @NonNull Integer newValue) {
-        return this.value[index] = newValue;
+    public Integer set(int index, @NonNull Integer element) {
+        return this.value[index] = element;
     }
 
     @Override
-    public void insert(int index, @NonNull Integer... values) {
-        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(values));
+    public void insert(int index, @NonNull Integer... elements) {
+        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(elements));
     }
 
     @Override

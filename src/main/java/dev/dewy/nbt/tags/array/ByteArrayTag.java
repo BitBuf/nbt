@@ -2,6 +2,7 @@ package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.TagType;
 import dev.dewy.nbt.TagTypeRegistry;
+import dev.dewy.nbt.tags.primitive.ByteTag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -12,11 +13,23 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * The byte array tag (type ID 7) is used for storing {@code byte[]} arrays in NBT structures.
+ * It is not stored as a list of {@link ByteTag}s.
+ *
+ * @author dewy
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class ByteArrayTag extends ArrayTag<Byte> {
     private @NonNull byte[] value;
 
+    /**
+     * Constructs a byte array tag with a given name and value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code byte[]} value.
+     */
     public ByteArrayTag(String name, @NonNull byte[] value) {
         this.setName(name);
         this.setValue(value);
@@ -32,6 +45,11 @@ public class ByteArrayTag extends ArrayTag<Byte> {
         return this.value;
     }
 
+    /**
+     * Sets the {@code byte[]} value of this byte array tag.
+     *
+     * @param value new {@code byte[]} value to be set.
+     */
     public void setValue(@NonNull byte[] value) {
         this.value = value;
     }
@@ -63,13 +81,13 @@ public class ByteArrayTag extends ArrayTag<Byte> {
     }
 
     @Override
-    public Byte set(int index, @NonNull Byte newValue) {
-        return this.value[index] = newValue;
+    public Byte set(int index, @NonNull Byte element) {
+        return this.value[index] = element;
     }
 
     @Override
-    public void insert(int index, @NonNull Byte... values) {
-        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(values));
+    public void insert(int index, @NonNull Byte... elements) {
+        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(elements));
     }
 
     @Override
