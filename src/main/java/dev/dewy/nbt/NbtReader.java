@@ -1,83 +1,56 @@
 package dev.dewy.nbt;
 
-import dev.dewy.nbt.tags.CompoundTag;
-import dev.dewy.nbt.tags.RootTag;
-import dev.dewy.nbt.utils.CompressionType;
-import dev.dewy.nbt.utils.TagType;
+import dev.dewy.nbt.tags.collection.CompoundTag;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
-import java.io.*;
-import java.util.Base64;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.InflaterInputStream;
+import java.io.DataInput;
+import java.io.IOException;
 
-public final class NbtReader {
+/**
+ * Used to read root {@link CompoundTag}s using a certain {@link TagTypeRegistry}.
+ *
+ * @author dewy
+ */
+@AllArgsConstructor
+public class NbtReader {
+    private @NonNull TagTypeRegistry typeRegistry;
+
     /**
-     * Reads a named root tag (full NBT structure) from a {@link DataInput} stream.
+     * Reads a root {@link CompoundTag} from a {@link DataInput} stream.
      *
-     * @param input The {@link DataInput} stream to read from.
-     * @throws IOException If any kind of IO error occurs.
-     * @return The root tag.
+     * @param input the stream to read from.
+     * @return the root {@link CompoundTag} read from the stream.
+     * @throws IOException if any I/O error occurs.
      */
-    public static RootTag fromStream(DataInput input) throws IOException {
+    public CompoundTag fromStream(@NonNull DataInput input) throws IOException {
         if (input.readByte() != TagType.COMPOUND.getId()) {
-            throw new IOException("Root tag must be a compound tag.");
+            throw new IOException("Root tag in NBT structure must be a compound tag.");
         }
 
-        return new RootTag(input.readUTF(), CompoundTag.read.read(input));
-    }
+        CompoundTag result = new CompoundTag();
 
-    /**
-     * Reads a named root tag (full NBT structure) from a {@link File} with a given kind of compression.
-     *
-     * @param file The file to read from.
-     * @throws IOException If any kind of IO error occurs.
-     * @return The root tag.
-     */
-    public static RootTag fromFile(File file) throws IOException {
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-        DataInputStream in;
+        result.setName(input.readUTF());
+        result.read(input, 0, this.typeRegistry);
 
-        switch (CompressionType.getCompression(new FileInputStream(file))) {
-            case NONE:
-                in = new DataInputStream(bis);
-                break;
-            case GZIP:
-                in = new DataInputStream(new GZIPInputStream(bis));
-                break;
-            case ZLIB:
-                in = new DataInputStream(new InflaterInputStream(bis));
-                break;
-            default:
-                throw new IllegalStateException("Illegal compression type. This should never happen.");
-        }
-
-        RootTag result = fromStream(in);
-
-        in.close();
         return result;
     }
 
     /**
-     * Reads a named root tag (full NBT structure) from a byte array.
+     * Returns the {@link TagTypeRegistry} currently in use by this reader.
      *
-     * @param bytes The byte array to read from.
-     * @return The root tag.
-     * @throws IOException If any kind of IO error occurs.
+     * @return the {@link TagTypeRegistry} currently in use by this reader.
      */
-    public static RootTag fromByteArray(byte[] bytes) throws IOException {
-        DataInputStream in = new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(bytes)));
-
-        return fromStream(in);
+    public TagTypeRegistry getTypeRegistry() {
+        return typeRegistry;
     }
 
     /**
-     * Reads a named root tag (full NBT structure) from a Base64 string.
+     * Sets the {@link TagTypeRegistry} currently in use by this reader. Used to utilise custom-made tag types.
      *
-     * @param base64 The Base64 to read from.
-     * @return The root tag.
-     * @throws IOException If any kind of IO error occurs.
+     * @param typeRegistry the new {@link TagTypeRegistry} to be set.
      */
-    public static RootTag fromBase64(String base64) throws IOException {
-        return fromByteArray(Base64.getDecoder().decode(base64));
+    public void setTypeRegistry(TagTypeRegistry typeRegistry) {
+        this.typeRegistry = typeRegistry;
     }
 }

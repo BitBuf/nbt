@@ -1,101 +1,61 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.utils.ReadFunction;
-import dev.dewy.nbt.utils.TagType;
+import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.TagTypeRegistry;
+import dev.dewy.nbt.tags.primitive.IntTag;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
- * Implementation of the int array tag.
+ * The int array tag (type ID 11) is used for storing {@code int[]} arrays in NBT structures.
+ * It is not stored as a list of {@link IntTag}s.
  *
  * @author dewy
  */
-public class IntArrayTag implements ArrayTag {
-    private int[] value;
+@NoArgsConstructor
+@AllArgsConstructor
+public class IntArrayTag extends ArrayTag<Integer> {
+    private @NonNull int[] value;
 
     /**
-     * Reads a {@link IntArrayTag} from a {@link DataInput} stream.
-     */
-    public static final ReadFunction<DataInput, IntArrayTag> read = input ->{
-        int[] ints = new int[input.readInt()];
-
-        for (int i = 0; i <= ints.length - 1; i++) {
-            ints[i] = input.readInt();
-        }
-
-        return new IntArrayTag(ints);
-    };
-
-    /**
-     * Constructs a new int array tag with a given value.
+     * Constructs an int array tag with a given name and value.
      *
-     * @param value The value to be contained within the tag.
-     * @throws IllegalArgumentException If the value parameter is null.
+     * @param name the tag's name.
+     * @param value the tag's {@code int[]} value.
      */
-    public IntArrayTag(int[] value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of int array tag cannot be null.");
-        }
-
-        this.value = value;
+    public IntArrayTag(String name, @NonNull int[] value) {
+        this.setName(name);
+        this.setValue(value);
     }
 
-    /**
-     * Constructs a new int array tag with a collection of any primitive numeric type as input.
-     *
-     * @param value The collection to be contained within the tag.
-     * @throws IllegalArgumentException If the value parameter is null.
-     */
-    public IntArrayTag(Collection<? extends Number> value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of int array tag cannot be null.");
-        }
-
-        Object[] boxedArray = value.toArray();
-
-        int len = boxedArray.length;
-        int[] array = new int[len];
-
-        for (int i = 0; i < len; i++) {
-            array[i] = ((Number) boxedArray[i]).intValue();
-        }
-
-        this.value = array;
+    @Override
+    public byte getTypeId() {
+        return TagType.INT_ARRAY.getId();
     }
 
-    /**
-     * Returns the int array value contained inside the tag.
-     *
-     * @return The int array value contained inside the tag.
-     */
+    @Override
     public int[] getValue() {
-        return value;
+        return this.value;
     }
 
     /**
-     * Sets the int array value contained inside the tag.
+     * Sets the {@code int[]} value of this int array tag.
      *
-     * @param value The new value to be contained inside this tag.
+     * @param value new {@code int[]} value to be set.
      */
-    public void setValue(int[] value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of int array tag cannot be null.");
-        }
-
+    public void setValue(@NonNull int[] value) {
         this.value = value;
     }
 
     @Override
-    public TagType getType() {
-        return TagType.INT_ARRAY;
-    }
-
-    @Override
-    public void write(DataOutput output) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeInt(this.value.length);
 
         for (int i : this.value) {
@@ -104,13 +64,47 @@ public class IntArrayTag implements ArrayTag {
     }
 
     @Override
-    public ReadFunction<DataInput, IntArrayTag> getReader() {
-        return read;
+    public IntArrayTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
+        this.value = new int[input.readInt()];
+
+        for (int i = 0; i < this.value.length; i++) {
+            this.value[i] = input.readInt();
+        }
+
+        return this;
     }
 
     @Override
     public int size() {
         return this.value.length;
+    }
+
+    @Override
+    public Integer get(int index) {
+        return this.value[index];
+    }
+
+    @Override
+    public Integer set(int index, @NonNull Integer element) {
+        return this.value[index] = element;
+    }
+
+    @Override
+    public void insert(int index, @NonNull Integer... elements) {
+        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(elements));
+    }
+
+    @Override
+    public Integer remove(int index) {
+        Integer previous = this.value[index];
+        this.value = ArrayUtils.remove(this.value, index);
+
+        return previous;
+    }
+
+    @Override
+    public void clear() {
+        this.value = new int[0];
     }
 
     @Override

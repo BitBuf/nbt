@@ -1,113 +1,106 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.utils.ReadFunction;
-import dev.dewy.nbt.utils.TagType;
+import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.TagTypeRegistry;
+import dev.dewy.nbt.tags.primitive.ByteTag;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
- * Implementation of the byte array tag.
+ * The byte array tag (type ID 7) is used for storing {@code byte[]} arrays in NBT structures.
+ * It is not stored as a list of {@link ByteTag}s.
  *
  * @author dewy
  */
-public class ByteArrayTag implements ArrayTag {
-    private byte[] value;
+@NoArgsConstructor
+@AllArgsConstructor
+public class ByteArrayTag extends ArrayTag<Byte> {
+    private @NonNull byte[] value;
 
     /**
-     * Reads a {@link ByteArrayTag} from a {@link DataInput} stream.
-     */
-    public static final ReadFunction<DataInput, ByteArrayTag> read = input -> {
-        byte[] bytes = new byte[input.readInt()];
-
-        for (int i = 0; i <= bytes.length - 1; i++) {
-            bytes[i] = input.readByte();
-        }
-
-        return new ByteArrayTag(bytes);
-    };
-
-    /**
-     * Constructs a new byte array tag with a given value.
+     * Constructs a byte array tag with a given name and value.
      *
-     * @param value The value to be contained within the tag.
-     * @throws IllegalArgumentException If the value parameter is null.
+     * @param name the tag's name.
+     * @param value the tag's {@code byte[]} value.
      */
-    public ByteArrayTag(byte[] value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of byte array tag cannot be null.");
-        }
-
-        this.value = value;
+    public ByteArrayTag(String name, @NonNull byte[] value) {
+        this.setName(name);
+        this.setValue(value);
     }
 
-    /**
-     * Constructs a new byte array tag with a collection of any primitive numeric type as input.
-     *
-     * @param value The collection to be contained within the tag.
-     * @throws IllegalArgumentException If the value parameter is null.
-     */
-    public ByteArrayTag(Collection<? extends Number> value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of byte array tag cannot be null.");
-        }
-
-        Object[] boxedArray = value.toArray();
-
-        int len = boxedArray.length;
-        byte[] array = new byte[len];
-
-        for (int i = 0; i < len; i++) {
-            array[i] = ((Number) boxedArray[i]).byteValue();
-        }
-
-        this.value = array;
+    @Override
+    public byte getTypeId() {
+        return TagType.BYTE_ARRAY.getId();
     }
 
-    /**
-     * Returns the byte array value contained inside the tag.
-     *
-     * @return The byte array value contained inside the tag.
-     */
+    @Override
     public byte[] getValue() {
-        return value;
+        return this.value;
     }
 
     /**
-     * Sets the byte array value contained inside the tag.
+     * Sets the {@code byte[]} value of this byte array tag.
      *
-     * @param value The new value to be contained inside this tag.
+     * @param value new {@code byte[]} value to be set.
      */
-    public void setValue(byte[] value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of byte array tag cannot be null.");
-        }
-
+    public void setValue(@NonNull byte[] value) {
         this.value = value;
     }
 
     @Override
-    public TagType getType() {
-        return TagType.BYTE_ARRAY;
-    }
-
-    @Override
-    public void write(DataOutput output) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeInt(this.value.length);
         output.write(this.value);
     }
 
     @Override
-    public ReadFunction<DataInput, ByteArrayTag> getReader() {
-        return read;
+    public ByteArrayTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
+        byte[] tmp = new byte[input.readInt()];
+        input.readFully(tmp);
+
+        this.value = tmp;
+
+        return this;
     }
 
     @Override
     public int size() {
         return this.value.length;
+    }
+
+    @Override
+    public Byte get(int index) {
+        return this.value[index];
+    }
+
+    @Override
+    public Byte set(int index, @NonNull Byte element) {
+        return this.value[index] = element;
+    }
+
+    @Override
+    public void insert(int index, @NonNull Byte... elements) {
+        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(elements));
+    }
+
+    @Override
+    public Byte remove(int index) {
+        Byte previous = this.value[index];
+        this.value = ArrayUtils.remove(this.value, index);
+
+        return previous;
+    }
+
+    @Override
+    public void clear() {
+        this.value = new byte[0];
     }
 
     @Override

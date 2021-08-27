@@ -1,101 +1,61 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.utils.ReadFunction;
-import dev.dewy.nbt.utils.TagType;
+import dev.dewy.nbt.TagType;
+import dev.dewy.nbt.TagTypeRegistry;
+import dev.dewy.nbt.tags.primitive.LongTag;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
- * Implementation of the long array tag.
+ * The long array tag (type ID 12) is used for storing {@code long[]} arrays in NBT structures.
+ * It is not stored as a list of {@link LongTag}s.
  *
  * @author dewy
  */
-public class LongArrayTag implements ArrayTag {
-    private long[] value;
+@NoArgsConstructor
+@AllArgsConstructor
+public class LongArrayTag extends ArrayTag<Long> {
+    private @NonNull long[] value;
 
     /**
-     * Reads a {@link LongArrayTag} from a {@link DataInput} stream.
-     */
-    public static final ReadFunction<DataInput, LongArrayTag> read = input ->{
-        long[] longs = new long[input.readInt()];
-
-        for (int i = 0; i <= longs.length - 1; i++) {
-            longs[i] = input.readLong();
-        }
-
-        return new LongArrayTag(longs);
-    };
-
-    /**
-     * Constructs a new long array tag with a given value.
+     * Constructs a long array tag with a given name and value.
      *
-     * @param value The value to be contained within the tag.
-     * @throws IllegalArgumentException If the value parameter is null.
+     * @param name the tag's name.
+     * @param value the tag's {@code long[]} value.
      */
-    public LongArrayTag(long[] value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of long array tag cannot be null.");
-        }
-
-        this.value = value;
+    public LongArrayTag(String name, @NonNull long[] value) {
+        this.setName(name);
+        this.setValue(value);
     }
 
-    /**
-     * Constructs a new long array tag with a collection of any primitive numeric type as input.
-     *
-     * @param value The collection to be contained within the tag.
-     * @throws IllegalArgumentException If the value parameter is null.
-     */
-    public LongArrayTag(Collection<? extends Number> value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of long array tag cannot be null.");
-        }
-
-        Object[] boxedArray = value.toArray();
-
-        int len = boxedArray.length;
-        long[] array = new long[len];
-
-        for (int i = 0; i < len; i++) {
-            array[i] = ((Number) boxedArray[i]).longValue();
-        }
-
-        this.value = array;
+    @Override
+    public byte getTypeId() {
+        return TagType.LONG_ARRAY.getId();
     }
 
-    /**
-     * Returns the long array value contained inside the tag.
-     *
-     * @return The long array value contained inside the tag.
-     */
+    @Override
     public long[] getValue() {
-        return value;
+        return this.value;
     }
 
     /**
-     * Sets the long array value contained inside the tag.
+     * Sets the {@code long[]} value of this long array tag.
      *
-     * @param value The new value to be contained inside this tag.
+     * @param value new {@code long[]} value to be set.
      */
-    public void setValue(long[] value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Value of long array tag cannot be null.");
-        }
-
+    public void setValue(@NonNull long[] value) {
         this.value = value;
     }
 
     @Override
-    public TagType getType() {
-        return TagType.LONG_ARRAY;
-    }
-
-    @Override
-    public void write(DataOutput output) throws IOException {
+    public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeInt(this.value.length);
 
         for (long l : this.value) {
@@ -104,13 +64,47 @@ public class LongArrayTag implements ArrayTag {
     }
 
     @Override
-    public ReadFunction<DataInput, LongArrayTag> getReader() {
-        return read;
+    public LongArrayTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
+        this.value = new long[input.readInt()];
+
+        for (int i = 0; i < this.value.length; i++) {
+            this.value[i] = input.readLong();
+        }
+
+        return this;
     }
 
     @Override
     public int size() {
         return this.value.length;
+    }
+
+    @Override
+    public Long get(int index) {
+        return this.value[index];
+    }
+
+    @Override
+    public Long set(int index, @NonNull Long element) {
+        return this.value[index] = element;
+    }
+
+    @Override
+    public void insert(int index, @NonNull Long... elements) {
+        this.value = ArrayUtils.insert(index, this.value, ArrayUtils.toPrimitive(elements));
+    }
+
+    @Override
+    public Long remove(int index) {
+        Long previous = this.value[index];
+        this.value = ArrayUtils.remove(this.value, index);
+
+        return previous;
+    }
+
+    @Override
+    public void clear() {
+        this.value = new long[0];
     }
 
     @Override

@@ -1,37 +1,69 @@
 package dev.dewy.nbt.tags;
 
-import dev.dewy.nbt.utils.ReadFunction;
-import dev.dewy.nbt.utils.TagType;
+import dev.dewy.nbt.TagTypeRegistry;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * Interface for an NBT tag implementation.
+ * An abstract NBT tag.
  *
  * @author dewy
  */
-public interface Tag {
-    /**
-     * Returns the {@link TagType} being implemented.
-     *
-     * @return The {@link TagType} being implemented.
-     */
-    TagType getType();
+public abstract class Tag {
+    private String name;
 
     /**
-     * Writes the data inside the NBT tag to a {@link DataOutput} stream.
+     * Returns the name (key) of this tag.
      *
-     * @param output The stream to write to.
-     * @throws IOException If any IO error occurs.
+     * @return the name (key) of this tag.
      */
-    void write(DataOutput output) throws IOException;
+    public String getName() {
+        return name;
+    }
 
     /**
-     * Returns the {@link ReadFunction} associated with the NBT tag.
+     * Sets the name (key) of this tag.
      *
-     * @return The {@link ReadFunction} associated with the NBT tag.
+     * @param name the new name to be set.
      */
-    ReadFunction<DataInput, ? extends Tag> getReader();
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Returns a unique ID for this NBT tag type. 0 to 12 (inclusive) are reserved.
+     *
+     * @return a unique ID for this NBT tag type.
+     */
+    public abstract byte getTypeId();
+
+    /**
+     * Returns the value held by this tag.
+     *
+     * @return the value held by this tag.
+     */
+    public abstract Object getValue();
+
+    /**
+     * Writes this tag to a {@link DataOutput} stream.
+     *
+     * @param output the stream to write to.
+     * @param depth the current depth of the NBT data structure.
+     * @param registry the {@link TagTypeRegistry} to be used in writing.
+     * @throws IOException if any I/O error occurs.
+     */
+    public abstract void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException;
+
+    /**
+     * Reads this tag from a {@link DataInput} stream.
+     *
+     * @param input the stream to read from.
+     * @param depth the current depth of the NBT data structure.
+     * @param registry the {@link TagTypeRegistry} to be used in reading.
+     * @return this (literally {@code return this;} after reading).
+     * @throws IOException if any I/O error occurs.
+     */
+    public abstract Tag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException;
 }
