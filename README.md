@@ -21,7 +21,7 @@
 
 NBT (Named Binary Tag) is a binary format devised by Notch to be Minecraft's primary means of data storage.
 
-There are 12 types of tag that can be used in a complaint NBT file (see [TagType.java](src/main/java/dev/dewy/nbt/TagType.java) for descriptions of each):
+There are 12 types of tag that can be used in a complaint NBT file (see [TagType.java](src/main/java/dev/dewy/nbt/tags/TagType.java) for descriptions of each):
 
 - [Byte](src/main/java/dev/dewy/nbt/tags/primitive/ByteTag.java)
 - [Short](src/main/java/dev/dewy/nbt/tags/primitive/ShortTag.java)
