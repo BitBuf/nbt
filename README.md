@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.dewy:nbt:1.3.0"
+    implementation "dev.dewy:nbt:1.3.1"
 }
 ```
 
@@ -72,7 +72,7 @@ See the [NbtTest](src/test/java/dev/dewy/nbt/test/NbtTest.java) class for full s
 ### Features
 
 - Fully compliant with Mojang's "standards"
-- Small and lightweight (36Kb!)
+- Small and lightweight (40Kb!)
 - Supports all Java edition NBT tags (including long array)
 - Intuitive and flexible reading and writing functionality
 
