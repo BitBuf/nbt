@@ -1,5 +1,7 @@
-package dev.dewy.nbt;
+package dev.dewy.nbt.io;
 
+import dev.dewy.nbt.registry.TagTypeRegistry;
+import dev.dewy.nbt.tags.TagType;
 import dev.dewy.nbt.tags.collection.CompoundTag;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;

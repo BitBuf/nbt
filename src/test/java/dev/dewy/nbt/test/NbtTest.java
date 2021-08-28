@@ -1,6 +1,6 @@
 package dev.dewy.nbt.test;
 
-import dev.dewy.nbt.CompressionType;
+import dev.dewy.nbt.io.CompressionType;
 import dev.dewy.nbt.Nbt;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
@@ -30,9 +30,13 @@ public class NbtTest {
         root.put(new ShortTag("short", 345));
         root.put(new IntTag("int", -981735));
         root.put(new LongTag("long", -398423290489L));
-        root.put(new FloatTag("float", 12.5F));
-        root.put(new DoubleTag("double", -19040912.1235));
-        root.put(new StringTag("string", "https://dewy.dev"));
+
+        // more primitives, using the specialized put methods
+        root.putFloat("float", 12.5F);
+        root.putDouble("double", -19040912.1235);
+
+        // putting a previously unnamed tag.
+        root.put("string", new StringTag("https://dewy.dev"));
 
         // array NBT tags
         root.put(new ByteArrayTag("bytes", new byte[] {0, -124, 13, -6, Byte.MAX_VALUE}));
@@ -63,7 +67,7 @@ public class NbtTest {
         // list containing an empty list of ints
         ListTag<ListTag<IntTag>> listsOfInts = new ListTag<>("listofints");
         listsOfInts.add(new ListTag<>());
-        root.put(listsOfInts);
+        root.putList("listofints", listsOfInts.getValue());
 
         // writing to file (no compression type provided for no compression)
         NBT.toFile(root, new File("sample.nbt"));

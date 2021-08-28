@@ -1,9 +1,13 @@
 package dev.dewy.nbt.tags.collection;
 
-import dev.dewy.nbt.TagType;
-import dev.dewy.nbt.TagTypeRegistry;
-import dev.dewy.nbt.exceptions.TagTypeRegistryException;
+import dev.dewy.nbt.registry.TagTypeRegistry;
+import dev.dewy.nbt.registry.TagTypeRegistryException;
 import dev.dewy.nbt.tags.Tag;
+import dev.dewy.nbt.tags.TagType;
+import dev.dewy.nbt.tags.array.ByteArrayTag;
+import dev.dewy.nbt.tags.array.IntArrayTag;
+import dev.dewy.nbt.tags.array.LongArrayTag;
+import dev.dewy.nbt.tags.primitive.*;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
@@ -141,12 +145,74 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
      * Adds a given tag to this compound. The tag must have a name, or NPE is thrown.
      *
      * @param tag the named tag to be added to the compound.
-     * @param <T> the tag type you believe you may be replacing (optional).
-     * @return the previous value mapped with the tag's name as type T if provided, or null if there wasn't any.
+     * @param <E> the type of an existing tag you believe you may be replacing (optional).
+     * @return the previous value mapped with the tag's name as type E if provided, or null if there wasn't any.
      * @throws NullPointerException if the tag's name is null.
      */
-    public <T extends Tag> T put(@NonNull Tag tag) {
-        return (T) this.value.put(tag.getName(), tag);
+    public <E extends Tag> E put(@NonNull Tag tag) {
+        return (E) this.value.put(tag.getName(), tag);
+    }
+
+    /**
+     * Adds a given tag to this compound. Be careful, the tag's name is set to the {@code name} parameter automatically.
+     *
+     * @param name the tag's name (key).
+     * @param tag the tag to be added to the compound.
+     * @param <E> the type of an existing tag you believe you may be replacing (optional).
+     * @return the previous value mapped with the tag's name as type E if provided, or null if there wasn't any.
+     */
+    public <E extends Tag> E put(@NonNull String name, @NonNull Tag tag) {
+        tag.setName(name);
+
+        return this.put(tag);
+    }
+
+    public void putByte(@NonNull String name, byte value) {
+        this.put(name, new ByteTag(name, value));
+    }
+
+    public void putShort(@NonNull String name, short value) {
+        this.put(name, new ShortTag(name, value));
+    }
+
+    public void putInt(@NonNull String name, int value) {
+        this.put(name, new IntTag(name, value));
+    }
+
+    public void putLong(@NonNull String name, long value) {
+        this.put(name, new LongTag(name, value));
+    }
+
+    public void putFloat(@NonNull String name, float value) {
+        this.put(name, new FloatTag(name, value));
+    }
+
+    public void putDouble(@NonNull String name, double value) {
+        this.put(name, new DoubleTag(name, value));
+    }
+
+    public void putByteArray(@NonNull String name, @NonNull byte[] value) {
+        this.put(name, new ByteArrayTag(name, value));
+    }
+
+    public void putString(@NonNull String name, @NonNull String value) {
+        this.put(name, new StringTag(name, value));
+    }
+
+    public <T extends Tag> void putList(@NonNull String name, List<T> value) {
+        this.put(name, new ListTag<>(name, value));
+    }
+
+    public void putCompound(@NonNull String name, @NonNull Map<@NonNull String, @NonNull Tag> value) {
+        this.put(name, new CompoundTag(name, value));
+    }
+
+    public void putIntArray(@NonNull String name, @NonNull int[] value) {
+        this.put(name, new IntArrayTag(name, value));
+    }
+
+    public void putLongArray(@NonNull String name, @NonNull long[] value) {
+        this.put(name, new LongArrayTag(name, value));
     }
 
     /**

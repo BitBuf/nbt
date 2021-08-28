@@ -1,7 +1,7 @@
-package dev.dewy.nbt;
+package dev.dewy.nbt.registry;
 
-import dev.dewy.nbt.exceptions.TagTypeRegistryException;
 import dev.dewy.nbt.tags.Tag;
+import dev.dewy.nbt.tags.TagType;
 import lombok.NonNull;
 
 import java.lang.reflect.Constructor;

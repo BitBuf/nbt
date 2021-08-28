@@ -1,4 +1,4 @@
-package dev.dewy.nbt;
+package dev.dewy.nbt.io;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public enum CompressionType {
      */
     ZLIB;
 
-    static CompressionType getCompression(InputStream in) throws IOException {
+    public static CompressionType getCompression(InputStream in) throws IOException {
         if (!in.markSupported()) {
             in = new BufferedInputStream(in);
         }

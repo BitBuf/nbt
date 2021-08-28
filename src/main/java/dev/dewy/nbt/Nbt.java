@@ -1,5 +1,9 @@
 package dev.dewy.nbt;
 
+import dev.dewy.nbt.io.CompressionType;
+import dev.dewy.nbt.io.NbtReader;
+import dev.dewy.nbt.io.NbtWriter;
+import dev.dewy.nbt.registry.TagTypeRegistry;
 import dev.dewy.nbt.tags.collection.CompoundTag;
 import lombok.NonNull;
 

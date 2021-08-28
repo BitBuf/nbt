@@ -1,6 +1,7 @@
-package dev.dewy.nbt;
+package dev.dewy.nbt.tags;
 
-import dev.dewy.nbt.exceptions.TagTypeRegistryException;
+import dev.dewy.nbt.registry.TagTypeRegistry;
+import dev.dewy.nbt.registry.TagTypeRegistryException;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
 import dev.dewy.nbt.tags.array.LongArrayTag;
@@ -84,7 +85,7 @@ public enum TagType {
         return (byte) id;
     }
 
-    static void registerAll(TagTypeRegistry registry) {
+    public static void registerAll(TagTypeRegistry registry) {
         try {
             registry.registerTagType(BYTE.getId(), ByteTag.class);
             registry.registerTagType(SHORT.getId(), ShortTag.class);

@@ -1,7 +1,7 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.TagType;
-import dev.dewy.nbt.TagTypeRegistry;
+import dev.dewy.nbt.registry.TagTypeRegistry;
+import dev.dewy.nbt.tags.TagType;
 import dev.dewy.nbt.tags.primitive.ByteTag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

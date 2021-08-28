@@ -1,6 +1,4 @@
-package dev.dewy.nbt.exceptions;
-
-import dev.dewy.nbt.TagTypeRegistry;
+package dev.dewy.nbt.registry;
 
 /**
  * Checked exception thrown when any issue arises relating to the {@link TagTypeRegistry}.
