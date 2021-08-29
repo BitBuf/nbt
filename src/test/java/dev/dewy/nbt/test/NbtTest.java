@@ -11,6 +11,8 @@ import dev.dewy.nbt.tags.primitive.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple demonstration of how the NBT library may be used.
@@ -41,7 +43,17 @@ public class NbtTest {
         // array NBT tags
         root.put(new ByteArrayTag("bytes", new byte[] {0, -124, 13, -6, Byte.MAX_VALUE}));
         root.put(new IntArrayTag("ints", new int[] {0, -1348193, 817519, Integer.MIN_VALUE, 4}));
-        root.put(new LongArrayTag("longs", new long[] {12490812, 903814091904L, -3, Long.MIN_VALUE, Long.MAX_VALUE, 0}));
+
+        // constructing array tags with List<> objects
+        List<Long> longList = new ArrayList<>();
+        longList.add(12490812L);
+        longList.add(903814091904L);
+        longList.add(-3L);
+        longList.add(Long.MIN_VALUE);
+        longList.add(Long.MAX_VALUE);
+        longList.add(0L);
+
+        root.put(new LongArrayTag("longs", longList));
 
         // compound and list tags
         CompoundTag subCompound = new CompoundTag("sub");

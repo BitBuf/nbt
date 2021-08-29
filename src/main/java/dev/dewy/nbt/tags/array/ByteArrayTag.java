@@ -12,6 +12,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The byte array tag (type ID 7) is used for storing {@code byte[]} arrays in NBT structures.
@@ -33,6 +34,26 @@ public class ByteArrayTag extends ArrayTag<Byte> {
     public ByteArrayTag(String name, @NonNull byte[] value) {
         this.setName(name);
         this.setValue(value);
+    }
+
+    /**
+     * Constructs an unnamed byte array tag using a {@code List<>} object.
+     *
+     * @param value the tag's {@code List<>} value, to be converted to a primitive {@code byte[]} array.
+     */
+    public ByteArrayTag(@NonNull List<Byte> value) {
+        this(null, value);
+    }
+
+    /**
+     * Constructs a byte array tag with a given name, using a List<> object to determine its {@code byte[]} value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code List<>} value, to be converted to a primitive {@code byte[]} array.
+     */
+    public ByteArrayTag(String name, @NonNull List<Byte> value) {
+        this.setName(name);
+        this.setValue(ArrayUtils.toPrimitive(value.toArray(new Byte[0])));
     }
 
     @Override

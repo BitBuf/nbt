@@ -12,6 +12,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The int array tag (type ID 11) is used for storing {@code int[]} arrays in NBT structures.
@@ -33,6 +34,26 @@ public class IntArrayTag extends ArrayTag<Integer> {
     public IntArrayTag(String name, @NonNull int[] value) {
         this.setName(name);
         this.setValue(value);
+    }
+
+    /**
+     * Constructs an unnamed int array tag using a {@code List<>} object.
+     *
+     * @param value the tag's {@code List<>} value, to be converted to a primitive {@code int[]} array.
+     */
+    public IntArrayTag(@NonNull List<Integer> value) {
+        this(null, value);
+    }
+
+    /**
+     * Constructs an int array tag with a given name, using a List<> object to determine its {@code int[]} value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code List<>} value, to be converted to a primitive {@code int[]} array.
+     */
+    public IntArrayTag(String name, @NonNull List<Integer> value) {
+        this.setName(name);
+        this.setValue(ArrayUtils.toPrimitive(value.toArray(new Integer[0])));
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The long array tag (type ID 12) is used for storing {@code long[]} arrays in NBT structures.
@@ -33,6 +34,26 @@ public class LongArrayTag extends ArrayTag<Long> {
     public LongArrayTag(String name, @NonNull long[] value) {
         this.setName(name);
         this.setValue(value);
+    }
+
+    /**
+     * Constructs an unnamed long array tag using a {@code List<>} object.
+     *
+     * @param value the tag's {@code List<>} value, to be converted to a primitive {@code long[]} array.
+     */
+    public LongArrayTag(@NonNull List<Long> value) {
+        this(null, value);
+    }
+
+    /**
+     * Constructs a long array tag with a given name, using a List<> object to determine its {@code long[]} value.
+     *
+     * @param name the tag's name.
+     * @param value the tag's {@code List<>} value, to be converted to a primitive {@code long[]} array.
+     */
+    public LongArrayTag(String name, @NonNull List<Long> value) {
+        this.setName(name);
+        this.setValue(ArrayUtils.toPrimitive(value.toArray(new Long[0])));
     }
 
     @Override
