@@ -46,7 +46,7 @@ public class ByteArrayTag extends ArrayTag<Byte> {
     }
 
     /**
-     * Constructs a byte array tag with a given name, using a List<> object to determine its {@code byte[]} value.
+     * Constructs a byte array tag with a given name, using a List object to determine its {@code byte[]} value.
      *
      * @param name the tag's name.
      * @param value the tag's {@code List<>} value, to be converted to a primitive {@code byte[]} array.

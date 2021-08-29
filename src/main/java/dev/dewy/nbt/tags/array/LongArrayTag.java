@@ -46,7 +46,7 @@ public class LongArrayTag extends ArrayTag<Long> {
     }
 
     /**
-     * Constructs a long array tag with a given name, using a List<> object to determine its {@code long[]} value.
+     * Constructs a long array tag with a given name, using a List object to determine its {@code long[]} value.
      *
      * @param name the tag's name.
      * @param value the tag's {@code List<>} value, to be converted to a primitive {@code long[]} array.

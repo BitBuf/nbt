@@ -46,7 +46,7 @@ public class IntArrayTag extends ArrayTag<Integer> {
     }
 
     /**
-     * Constructs an int array tag with a given name, using a List<> object to determine its {@code int[]} value.
+     * Constructs an int array tag with a given name, using a List object to determine its {@code int[]} value.
      *
      * @param name the tag's name.
      * @param value the tag's {@code List<>} value, to be converted to a primitive {@code int[]} array.
