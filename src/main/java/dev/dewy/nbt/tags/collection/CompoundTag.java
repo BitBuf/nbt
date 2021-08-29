@@ -237,6 +237,54 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
         return (T) this.value.get(key);
     }
 
+    public ByteTag getByte(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public ShortTag getShort(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public IntTag getInt(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public LongTag getLong(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public FloatTag getFloat(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public DoubleTag getDouble(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public ByteArrayTag getByteArray(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public StringTag getString(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public <T extends Tag> ListTag<T> getList(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public CompoundTag getCompound(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public IntArrayTag getIntArray(@NonNull String key) {
+        return this.get(key);
+    }
+
+    public LongArrayTag getLongArray(@NonNull String key) {
+        return this.get(key);
+    }
+
     /**
      * Returns true if this compound contains an entry with a given name (key), false otherwise.
      *
@@ -245,6 +293,73 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
      */
     public boolean contains(@NonNull String key) {
         return this.value.containsKey(key);
+    }
+
+    /**
+     * Returns true if this compound contains an entry with a given name (key) and if that entry is of a given tag type, false otherwise.
+     *
+     * @param key the name (key) to check for.
+     * @param typeId the tag type ID to test for.
+     * @return true if this compound contains an entry with a given name (key) and if that entry is of a given tag type, false otherwise.
+     */
+    public boolean contains(@NonNull String key, byte typeId) {
+        if (!this.contains(key)) {
+            return false;
+        }
+
+        return this.get(key).getTypeId() == typeId;
+    }
+
+    public boolean containsByte(@NonNull String key) {
+        return this.contains(key, TagType.BYTE.getId());
+    }
+
+    public boolean containsShort(@NonNull String key) {
+        return this.contains(key, TagType.SHORT.getId());
+    }
+
+    public boolean containsInt(@NonNull String key) {
+        return this.contains(key, TagType.INT.getId());
+    }
+
+    public boolean containsLong(@NonNull String key) {
+        return this.contains(key, TagType.LONG.getId());
+    }
+
+    public boolean containsFloat(@NonNull String key) {
+        return this.contains(key, TagType.FLOAT.getId());
+    }
+
+    public boolean containsDouble(@NonNull String key) {
+        return this.contains(key, TagType.DOUBLE.getId());
+    }
+
+    public boolean containsByteArray(@NonNull String key) {
+        return this.contains(key, TagType.BYTE_ARRAY.getId());
+    }
+
+    public boolean containsString(@NonNull String key) {
+        return this.contains(key, TagType.STRING.getId());
+    }
+
+    public boolean containsList(@NonNull String key) {
+        return this.contains(key, TagType.LIST.getId());
+    }
+
+    public boolean containsListOf(@NonNull String key, byte of) {
+        return this.containsList(key) && this.getList(key).getListType() == of;
+    }
+
+    public boolean containsCompound(@NonNull String key) {
+        return this.contains(key, TagType.COMPOUND.getId());
+    }
+
+    public boolean containsIntArray(@NonNull String key) {
+        return this.contains(key, TagType.INT_ARRAY.getId());
+    }
+
+    public boolean containsLongArray(@NonNull String key) {
+        return this.contains(key, TagType.LONG_ARRAY.getId());
     }
 
     /**
