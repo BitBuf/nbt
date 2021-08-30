@@ -66,7 +66,7 @@ public static final Nbt NBT = new Nbt();
 CompoundTag test = NBT.fromBase64("CgALaGVsbG8gd29ybGQDAAR0ZXN0AAAAAAA");
 
 System.out.println(test.getName()); // hello world
-System.out.println(test.<IntTag>get("test").getValue()); // 0
+System.out.println(test.getInt("test").getValue()); // 0
 ```
 
 See the [NbtTest](src/test/java/dev/dewy/nbt/test/NbtTest.java) class for full sample usage.
