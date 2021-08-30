@@ -52,7 +52,7 @@ public class NbtReader {
      *
      * @param typeRegistry the new {@link TagTypeRegistry} to be set.
      */
-    public void setTypeRegistry(TagTypeRegistry typeRegistry) {
+    public void setTypeRegistry(@NonNull TagTypeRegistry typeRegistry) {
         this.typeRegistry = typeRegistry;
     }
 }

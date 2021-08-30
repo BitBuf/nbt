@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  */
 @AllArgsConstructor
 public class CompoundTag extends Tag implements Iterable<Tag> {
-    private @NonNull Map<@NonNull String, @NonNull Tag> value;
+    private @NonNull Map<String, Tag> value;
 
     /**
      * Constructs an empty, unnamed compound tag.
@@ -49,7 +49,7 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
      * @param name the tag's name.
      * @param value the tag's {@code Map<>} value.
      */
-    public CompoundTag(String name, @NonNull Map<@NonNull String, @NonNull Tag> value) {
+    public CompoundTag(String name, @NonNull Map<String, Tag> value) {
         this.setName(name);
         this.setValue(value);
     }
@@ -60,7 +60,7 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
     }
 
     @Override
-    public Map<@NonNull String, @NonNull Tag> getValue() {
+    public Map<String, Tag> getValue() {
         return this.value;
     }
 
@@ -69,7 +69,7 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
      *
      * @param value new {@code Map<>} value to be set.
      */
-    public void setValue(@NonNull Map<@NonNull String, @NonNull Tag> value) {
+    public void setValue(@NonNull Map<String, Tag> value) {
         this.value = value;
     }
 
@@ -95,7 +95,7 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
             throw new IOException("NBT structure too complex (depth > 512).");
         }
 
-        Map<@NonNull String, @NonNull Tag> tags = new LinkedHashMap<>();
+        Map<String, Tag> tags = new LinkedHashMap<>();
 
         byte nextTypeId;
         Tag nextTag;
@@ -203,7 +203,7 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
         this.put(name, new ListTag<>(name, value));
     }
 
-    public void putCompound(@NonNull String name, @NonNull Map<@NonNull String, @NonNull Tag> value) {
+    public void putCompound(@NonNull String name, @NonNull Map<String, Tag> value) {
         this.put(name, new CompoundTag(name, value));
     }
 

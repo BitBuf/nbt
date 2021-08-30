@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  */
 @AllArgsConstructor
 public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
-    private @NonNull List<@NonNull T> value;
+    private @NonNull List<T> value;
     private byte type;
 
     /**
@@ -45,7 +45,7 @@ public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
      * @param name the tag's name.
      * @param value the tag's {@code List<>} value.
      */
-    public ListTag(String name, @NonNull List<@NonNull T> value) {
+    public ListTag(String name, @NonNull List<T> value) {
         if (value.isEmpty()) {
             this.type = 0;
         } else {
