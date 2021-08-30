@@ -3,9 +3,9 @@
 *.nbt
 *.nbtt
 
-!sample.nbt
-!samplegzip.nbt
-!samplezlib.nbt
+!samples/sample.nbt
+!samples/samplegzip.nbt
+!samples/samplezlib.nbt
 
 ### Eclipse ###
 .metadata

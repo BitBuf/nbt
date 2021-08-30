@@ -82,15 +82,15 @@ public class NbtTest {
         root.putList("listofints", listsOfInts.getValue());
 
         // writing to file (no compression type provided for no compression)
-        NBT.toFile(root, new File("sample.nbt"));
-        NBT.toFile(root, new File("samplegzip.nbt"), CompressionType.GZIP);
-        NBT.toFile(root, new File("samplezlib.nbt"), CompressionType.ZLIB);
+        NBT.toFile(root, new File("samples/sample.nbt"));
+        NBT.toFile(root, new File("samples/samplegzip.nbt"), CompressionType.GZIP);
+        NBT.toFile(root, new File("samples/samplezlib.nbt"), CompressionType.ZLIB);
 
         // displaying a Base64 representation
         System.out.println(NBT.toBase64(root));
 
         // reading from file
-        CompoundTag clone = NBT.fromFile(new File("samplezlib.nbt"));
+        CompoundTag clone = NBT.fromFile(new File("samples/samplezlib.nbt"));
         System.out.println(clone.equals(root));
 
         // retrieving data from the read compound
