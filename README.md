@@ -77,6 +77,7 @@ See the [NbtTest](src/test/java/dev/dewy/nbt/test/NbtTest.java) class for full s
 - Small and lightweight (40Kb!)
 - Supports all Java edition NBT tags (including long array)
 - Intuitive and flexible reading and writing functionality
+- JSON (De)serialization
 
 #### Planned
 
