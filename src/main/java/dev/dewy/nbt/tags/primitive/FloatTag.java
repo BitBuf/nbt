@@ -1,5 +1,6 @@
 package dev.dewy.nbt.tags.primitive;
 
+import com.google.gson.JsonObject;
 import dev.dewy.nbt.registry.TagTypeRegistry;
 import dev.dewy.nbt.tags.TagType;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,33 @@ public class FloatTag extends NumericalTag<Float> {
     @Override
     public FloatTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readFloat();
+
+        return this;
+    }
+
+    @Override
+    public JsonObject toJson(int depth, TagTypeRegistry registry) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", this.getTypeId());
+
+        if (this.getName() != null) {
+            json.addProperty("name", this.getName());
+        }
+
+        json.addProperty("value", this.value);
+
+        return json;
+    }
+
+    @Override
+    public FloatTag fromJson(JsonObject json, int depth, TagTypeRegistry registry) {
+        if (json.has("name")) {
+            this.setName(json.getAsJsonPrimitive("name").getAsString());
+        } else {
+            this.setName(null);
+        }
+
+        this.value = json.getAsJsonPrimitive("value").getAsFloat();
 
         return this;
     }

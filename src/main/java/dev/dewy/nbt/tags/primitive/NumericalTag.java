@@ -1,6 +1,7 @@
 package dev.dewy.nbt.tags.primitive;
 
-import dev.dewy.nbt.tags.Tag;
+import dev.dewy.nbt.api.JsonSerializable;
+import dev.dewy.nbt.api.Tag;
 
 /**
  * An abstract superclass of all NBT tags representing numeric values that can be converted to the primitive types.
@@ -8,7 +9,7 @@ import dev.dewy.nbt.tags.Tag;
  * @param <T> the {@code Number} type this NBT tag represents.
  * @author dewy
  */
-public abstract class NumericalTag<T extends Number> extends Tag {
+public abstract class NumericalTag<T extends Number> extends Tag implements JsonSerializable {
     @Override
     public abstract T getValue();
 

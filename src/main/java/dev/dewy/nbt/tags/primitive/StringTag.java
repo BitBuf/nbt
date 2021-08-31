@@ -1,7 +1,9 @@
 package dev.dewy.nbt.tags.primitive;
 
+import com.google.gson.JsonObject;
+import dev.dewy.nbt.api.JsonSerializable;
+import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.registry.TagTypeRegistry;
-import dev.dewy.nbt.tags.Tag;
 import dev.dewy.nbt.tags.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -19,7 +21,7 @@ import java.util.Objects;
  */
 @NoArgsConstructor
 @AllArgsConstructor
-public class StringTag extends Tag {
+public class StringTag extends Tag implements JsonSerializable {
     private @NonNull String value;
 
     /**
@@ -60,6 +62,33 @@ public class StringTag extends Tag {
     @Override
     public StringTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readUTF();
+
+        return this;
+    }
+
+    @Override
+    public JsonObject toJson(int depth, TagTypeRegistry registry) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", this.getTypeId());
+
+        if (this.getName() != null) {
+            json.addProperty("name", this.getName());
+        }
+
+        json.addProperty("value", this.value);
+
+        return json;
+    }
+
+    @Override
+    public StringTag fromJson(JsonObject json, int depth, TagTypeRegistry registry) {
+        if (json.has("name")) {
+            this.setName(json.getAsJsonPrimitive("name").getAsString());
+        } else {
+            this.setName(null);
+        }
+
+        this.value = json.getAsJsonPrimitive("value").getAsString();
 
         return this;
     }

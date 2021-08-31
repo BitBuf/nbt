@@ -82,7 +82,6 @@ See the [NbtTest](src/test/java/dev/dewy/nbt/test/NbtTest.java) class for full s
 
 - SNBT (Stringified NBT) support
 - ENBT (Extended NBT) format (missing data types e.g., double array) support
-- JSON (De)serialization
 
 ### Javadocs
 

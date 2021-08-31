@@ -1,10 +1,16 @@
 package dev.dewy.nbt;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import dev.dewy.nbt.io.CompressionType;
 import dev.dewy.nbt.io.NbtReader;
 import dev.dewy.nbt.io.NbtWriter;
 import dev.dewy.nbt.registry.TagTypeRegistry;
 import dev.dewy.nbt.tags.collection.CompoundTag;
+import lombok.Cleanup;
 import lombok.NonNull;
 
 import java.io.*;
@@ -21,7 +27,9 @@ import java.util.zip.InflaterInputStream;
  * @author dewy
  */
 public class Nbt {
+    private @NonNull Gson gson;
     private @NonNull TagTypeRegistry typeRegistry;
+
     private final @NonNull NbtWriter writer;
     private final @NonNull NbtReader reader;
 
@@ -38,7 +46,12 @@ public class Nbt {
      * @param typeRegistry the tag type registry to be used, typically containing custom tag entries.
      */
     public Nbt(@NonNull TagTypeRegistry typeRegistry) {
+        this(typeRegistry, new GsonBuilder().setPrettyPrinting().create());
+    }
+
+    public Nbt(@NonNull TagTypeRegistry typeRegistry, @NonNull Gson gson) {
         this.typeRegistry = typeRegistry;
+        this.gson = gson;
 
         this.writer = new NbtWriter(typeRegistry);
         this.reader = new NbtReader(typeRegistry);
@@ -75,8 +88,8 @@ public class Nbt {
      * @throws IOException if any I/O error occurs.
      */
     public void toFile(@NonNull CompoundTag compound, @NonNull File file, @NonNull CompressionType compression) throws IOException {
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-        DataOutputStream dos = null;
+        @Cleanup BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+        @Cleanup DataOutputStream dos = null;
 
         switch (compression) {
             case NONE:
@@ -90,7 +103,12 @@ public class Nbt {
         }
 
         this.toStream(compound, dos);
-        dos.close();
+    }
+
+    public void toJson(@NonNull CompoundTag compound, @NonNull File file) throws IOException {
+        @Cleanup FileWriter writer = new FileWriter(file);
+
+        gson.toJson(compound.toJson(0, this.typeRegistry), writer);
     }
 
     /**
@@ -101,11 +119,10 @@ public class Nbt {
      * @throws IOException if any I/O error occurs.
      */
     public byte[] toByteArray(@NonNull CompoundTag compound) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream w = new DataOutputStream(new BufferedOutputStream(baos));
+        @Cleanup ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        @Cleanup DataOutputStream w = new DataOutputStream(new BufferedOutputStream(baos));
 
         this.toStream(compound, w);
-        w.flush();
 
         return baos.toByteArray();
     }
@@ -140,8 +157,8 @@ public class Nbt {
      * @throws IOException if any I/O error occurs.
      */
     public CompoundTag fromFile(@NonNull File file) throws IOException {
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-        DataInputStream in;
+        @Cleanup BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+        @Cleanup DataInputStream in = null;
 
         switch (CompressionType.getCompression(new FileInputStream(file))) {
             case NONE:
@@ -157,10 +174,13 @@ public class Nbt {
                 throw new IllegalStateException("Illegal compression type. This should never happen.");
         }
 
-        CompoundTag result = this.fromStream(in);
-        in.close();
+        return this.fromStream(in);
+    }
 
-        return result;
+    public CompoundTag fromJson(@NonNull File file) throws IOException {
+        @Cleanup FileReader reader = new FileReader(file);
+
+        return new CompoundTag().fromJson(gson.fromJson(reader, JsonObject.class), 0, this.typeRegistry);
     }
 
     /**
@@ -171,7 +191,9 @@ public class Nbt {
      * @throws IOException if any I/O error occurs.
      */
     public CompoundTag fromByteArray(@NonNull byte[] bytes) throws IOException {
-        return fromStream(new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(bytes))));
+        @Cleanup DataInputStream bais = new DataInputStream(new BufferedInputStream(new ByteArrayInputStream(bytes)));
+
+        return fromStream(bais);
     }
 
     /**
@@ -204,5 +226,13 @@ public class Nbt {
 
         this.writer.setTypeRegistry(typeRegistry);
         this.reader.setTypeRegistry(typeRegistry);
+    }
+
+    public Gson getGson() {
+        return gson;
+    }
+
+    public void setGson(@NonNull Gson gson) {
+        this.gson = gson;
     }
 }

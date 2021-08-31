@@ -1,8 +1,11 @@
 package dev.dewy.nbt.tags.collection;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import dev.dewy.nbt.api.JsonSerializable;
+import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.registry.TagTypeRegistry;
 import dev.dewy.nbt.registry.TagTypeRegistryException;
-import dev.dewy.nbt.tags.Tag;
 import dev.dewy.nbt.tags.TagType;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
@@ -24,7 +27,7 @@ import java.util.function.Consumer;
  * @author dewy
  */
 @AllArgsConstructor
-public class CompoundTag extends Tag implements Iterable<Tag> {
+public class CompoundTag extends Tag implements JsonSerializable, Iterable<Tag> {
     private @NonNull Map<String, Tag> value;
 
     /**
@@ -115,6 +118,76 @@ public class CompoundTag extends Tag implements Iterable<Tag> {
             nextTag.setName(input.readUTF());
             nextTag.read(input, depth + 1, registry);
 
+            tags.put(nextTag.getName(), nextTag);
+        }
+
+        this.value = tags;
+
+        return this;
+    }
+
+    @Override
+    public JsonObject toJson(int depth, TagTypeRegistry registry) throws IOException {
+        if (depth > 512) {
+            throw new IOException("NBT structure too complex (depth > 512).");
+        }
+
+        JsonObject json = new JsonObject();
+        JsonObject value = new JsonObject();
+        json.addProperty("type", this.getTypeId());
+
+        if (this.getName() != null) {
+            json.addProperty("name", this.getName());
+        }
+
+        for (Tag tag : this) {
+            try {
+                value.add(tag.getName(), ((JsonSerializable) tag).toJson(depth + 1, registry));
+            } catch (ClassCastException e) {
+                throw new IOException("Tag not JsonSerializable.", e);
+            }
+        }
+
+        json.add("value", value);
+
+        return json;
+    }
+
+    @Override
+    public CompoundTag fromJson(JsonObject json, int depth, TagTypeRegistry registry) throws IOException {
+        if (depth > 512) {
+            throw new IOException("NBT structure too complex (depth > 512).");
+        }
+
+        this.clear();
+
+        if (json.has("name")) {
+            this.setName(json.getAsJsonPrimitive("name").getAsString());
+        } else {
+            this.setName(null);
+        }
+
+        Map<String, Tag> tags = new LinkedHashMap<>();
+
+        byte nextTypeId;
+        Tag nextTag;
+        for (Map.Entry<String, JsonElement> entry : json.getAsJsonObject("value").entrySet()) {
+            JsonObject entryJson = entry.getValue().getAsJsonObject();
+
+            nextTypeId = entryJson.get("type").getAsByte();
+            Class<? extends Tag> tagClass = registry.getClassFromId(nextTypeId);
+
+            if (tagClass == null) {
+                throw new IOException("Tag type with ID " + nextTypeId + " not present in tag type registry.");
+            }
+
+            try {
+                nextTag = registry.instantiate(tagClass);
+            } catch (TagTypeRegistryException e) {
+                throw new IOException(e);
+            }
+
+            ((JsonSerializable) nextTag).fromJson(entryJson, depth + 1, registry);
             tags.put(nextTag.getName(), nextTag);
         }
 

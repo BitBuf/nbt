@@ -1,7 +1,7 @@
 package dev.dewy.nbt.test;
 
-import dev.dewy.nbt.io.CompressionType;
 import dev.dewy.nbt.Nbt;
+import dev.dewy.nbt.io.CompressionType;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
 import dev.dewy.nbt.tags.array.LongArrayTag;
@@ -20,8 +20,15 @@ import java.util.List;
  * @author dewy
  */
 public class NbtTest {
+    // paths for the sample files
+    private static final String SAMPLES_PATH = "samples/";
+    private static final File STANDARD_SAMPLE = new File(SAMPLES_PATH + "sample.nbt");
+    private static final File GZIP_SAMPLE = new File(SAMPLES_PATH + "samplegzip.nbt");
+    private static final File ZLIB_SAMPLE = new File(SAMPLES_PATH + "samplezlib.nbt");
+    private static final File JSON_SAMPLE = new File(SAMPLES_PATH + "sample.json");
+
     // instance of the Nbt class, globally used. use setTypeRegistry() to use custom-made tag types.
-    public static final Nbt NBT = new Nbt();
+    private static final Nbt NBT = new Nbt();
 
     public static void main(String[] args) throws IOException {
         // creation of a root compound (think of it like a JSONObject in GSON)
@@ -82,19 +89,23 @@ public class NbtTest {
         root.putList("listofints", listsOfInts.getValue());
 
         // writing to file (no compression type provided for no compression)
-        NBT.toFile(root, new File("samples/sample.nbt"));
-        NBT.toFile(root, new File("samples/samplegzip.nbt"), CompressionType.GZIP);
-        NBT.toFile(root, new File("samples/samplezlib.nbt"), CompressionType.ZLIB);
+        NBT.toFile(root, STANDARD_SAMPLE);
+        NBT.toFile(root, GZIP_SAMPLE, CompressionType.GZIP);
+        NBT.toFile(root, ZLIB_SAMPLE, CompressionType.ZLIB);
 
         // displaying a Base64 representation
         System.out.println(NBT.toBase64(root));
 
         // reading from file
-        CompoundTag clone = NBT.fromFile(new File("samples/samplezlib.nbt"));
+        CompoundTag clone = NBT.fromFile(ZLIB_SAMPLE);
         System.out.println(clone.equals(root));
 
         // retrieving data from the read compound
         System.out.println(clone.getName());
-        System.out.println("Be sure to visit " + clone.<StringTag>get("string").getValue() + " c:");
+        System.out.println("Be sure to visit " + clone.getString("string").getValue() + " c:");
+
+        // nbt to json and back
+        NBT.toJson(clone, JSON_SAMPLE);
+        System.out.println(NBT.fromJson(JSON_SAMPLE).equals(clone));
     }
 }

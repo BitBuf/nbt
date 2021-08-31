@@ -1,4 +1,4 @@
-package dev.dewy.nbt.tags;
+package dev.dewy.nbt.api;
 
 import dev.dewy.nbt.registry.TagTypeRegistry;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  * @author dewy
  */
-public abstract class Tag implements Cloneable {
+public abstract class Tag {
     private String name;
 
     /**

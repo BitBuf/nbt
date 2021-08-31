@@ -1,6 +1,6 @@
 package dev.dewy.nbt.registry;
 
-import dev.dewy.nbt.tags.Tag;
+import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.tags.TagType;
 import lombok.NonNull;
 

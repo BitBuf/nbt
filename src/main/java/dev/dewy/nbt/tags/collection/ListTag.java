@@ -1,8 +1,12 @@
 package dev.dewy.nbt.tags.collection;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import dev.dewy.nbt.api.JsonSerializable;
+import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.registry.TagTypeRegistry;
 import dev.dewy.nbt.registry.TagTypeRegistryException;
-import dev.dewy.nbt.tags.Tag;
 import dev.dewy.nbt.tags.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -19,7 +23,7 @@ import java.util.function.Consumer;
  * @author dewy
  */
 @AllArgsConstructor
-public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
+public class ListTag<T extends Tag> extends Tag implements JsonSerializable, Iterable<T> {
     private @NonNull List<T> value;
     private byte type;
 
@@ -130,6 +134,8 @@ public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
             }
 
             next.read(input, depth + 1, registry);
+            next.setName(null);
+
             tags.add(next);
         }
 
@@ -137,6 +143,78 @@ public class ListTag<T extends Tag> extends Tag implements Iterable<T> {
             this.type = 0;
         } else {
             this.type = tagType;
+        }
+
+        this.value = tags;
+
+        return this;
+    }
+
+    @Override
+    public JsonObject toJson(int depth, TagTypeRegistry registry) throws IOException {
+        if (depth > 512) {
+            throw new IOException("NBT structure too complex (depth > 512).");
+        }
+
+        JsonObject json = new JsonObject();
+        JsonArray value = new JsonArray();
+
+        json.addProperty("type", this.getTypeId());
+        json.addProperty("listType", this.getListType());
+
+        if (this.getName() != null) {
+            json.addProperty("name", this.getName());
+        }
+
+        for (T tag : this) {
+            tag.setName(null);
+            value.add(((JsonSerializable) tag).toJson(depth + 1, registry));
+        }
+
+        json.add("value", value);
+
+        return json;
+    }
+
+    @Override
+    public ListTag<T> fromJson(JsonObject json, int depth, TagTypeRegistry registry) throws IOException {
+        if (depth > 512) {
+            throw new IOException("NBT structure too complex (depth > 512).");
+        }
+
+        this.clear();
+
+        if (json.has("name")) {
+            this.setName(json.getAsJsonPrimitive("name").getAsString());
+        } else {
+            this.setName(null);
+        }
+
+        byte listType = json.get("listType").getAsByte();
+        List<T> tags = new LinkedList<>();
+
+        T nextTag;
+        for (JsonElement element : json.getAsJsonArray("value")) {
+            Class<? extends Tag> tagClass = registry.getClassFromId(listType);
+
+            if (tagClass == null) {
+                throw new IOException("Tag type with ID " + listType + " not present in tag type registry.");
+            }
+
+            try {
+                nextTag = (T) registry.instantiate(tagClass);
+            } catch (TagTypeRegistryException e) {
+                throw new IOException(e);
+            }
+
+            ((JsonSerializable) nextTag).fromJson((JsonObject) element, depth + 1, registry);
+            tags.add(nextTag);
+        }
+
+        if (tags.isEmpty()) {
+            this.type = 0;
+        } else {
+            this.type = listType;
         }
 
         this.value = tags;

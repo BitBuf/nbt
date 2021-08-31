@@ -1,5 +1,7 @@
 package dev.dewy.nbt.tags.array;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import dev.dewy.nbt.registry.TagTypeRegistry;
 import dev.dewy.nbt.tags.TagType;
 import dev.dewy.nbt.tags.primitive.IntTag;
@@ -90,6 +92,44 @@ public class IntArrayTag extends ArrayTag<Integer> {
 
         for (int i = 0; i < this.value.length; i++) {
             this.value[i] = input.readInt();
+        }
+
+        return this;
+    }
+
+    @Override
+    public JsonObject toJson(int depth, TagTypeRegistry registry) throws IOException {
+        JsonObject json = new JsonObject();
+        JsonArray array = new JsonArray();
+        json.addProperty("type", this.getTypeId());
+
+        if (this.getName() != null) {
+            json.addProperty("name", this.getName());
+        }
+
+        for (int i : this.value) {
+            array.add(i);
+        }
+
+        json.add("value", array);
+
+        return json;
+    }
+
+    @Override
+    public IntArrayTag fromJson(JsonObject json, int depth, TagTypeRegistry registry) throws IOException {
+        JsonArray array = json.getAsJsonArray("value");
+
+        if (json.has("name")) {
+            this.setName(json.getAsJsonPrimitive("name").getAsString());
+        } else {
+            this.setName(null);
+        }
+
+        this.value = new int[array.size()];
+
+        for (int i = 0; i < array.size(); i++) {
+            this.value[i] = array.get(i).getAsInt();
         }
 
         return this;
