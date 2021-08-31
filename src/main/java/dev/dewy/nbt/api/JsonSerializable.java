@@ -1,7 +1,7 @@
 package dev.dewy.nbt.api;
 
 import com.google.gson.JsonObject;
-import dev.dewy.nbt.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.registry.TagTypeRegistry;
 
 import java.io.IOException;
 

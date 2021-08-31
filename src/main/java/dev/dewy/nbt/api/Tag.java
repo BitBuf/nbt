@@ -1,6 +1,6 @@
 package dev.dewy.nbt.api;
 
-import dev.dewy.nbt.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.registry.TagTypeRegistry;
 
 import java.io.DataInput;
 import java.io.DataOutput;

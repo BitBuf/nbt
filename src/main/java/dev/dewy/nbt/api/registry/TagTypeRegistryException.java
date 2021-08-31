@@ -1,4 +1,4 @@
-package dev.dewy.nbt.registry;
+package dev.dewy.nbt.api.registry;
 
 /**
  * Checked exception thrown when any issue arises relating to the {@link TagTypeRegistry}.

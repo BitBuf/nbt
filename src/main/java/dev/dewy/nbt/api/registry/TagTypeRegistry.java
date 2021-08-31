@@ -1,4 +1,4 @@
-package dev.dewy.nbt.registry;
+package dev.dewy.nbt.api.registry;
 
 import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.tags.TagType;

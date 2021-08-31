@@ -1,7 +1,7 @@
 package dev.dewy.nbt.tags;
 
-import dev.dewy.nbt.registry.TagTypeRegistry;
-import dev.dewy.nbt.registry.TagTypeRegistryException;
+import dev.dewy.nbt.api.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.registry.TagTypeRegistryException;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
 import dev.dewy.nbt.tags.array.LongArrayTag;

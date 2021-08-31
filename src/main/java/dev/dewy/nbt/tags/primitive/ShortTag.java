@@ -1,7 +1,7 @@
 package dev.dewy.nbt.tags.primitive;
 
 import com.google.gson.JsonObject;
-import dev.dewy.nbt.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.registry.TagTypeRegistry;
 import dev.dewy.nbt.tags.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
