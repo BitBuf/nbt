@@ -1,6 +1,6 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.api.JsonSerializable;
+import dev.dewy.nbt.api.json.JsonSerializable;
 import dev.dewy.nbt.api.Tag;
 
 /**

@@ -104,7 +104,7 @@ public class NbtTest {
         System.out.println(clone.getName());
         System.out.println("Be sure to visit " + clone.getString("string").getValue() + " c:");
 
-        // nbt to json and back
+        // nbt to json and back: see readme for NBT JSON format documentation
         NBT.toJson(clone, JSON_SAMPLE);
         System.out.println(NBT.fromJson(JSON_SAMPLE).equals(clone));
     }
