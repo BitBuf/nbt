@@ -12,6 +12,7 @@ import dev.dewy.nbt.tags.primitive.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -105,7 +106,23 @@ public class NbtTest {
         System.out.println("Be sure to visit " + clone.getString("string").getValue() + " c:");
 
         // nbt to json and back: see readme for NBT JSON format documentation
-        NBT.toJson(clone, JSON_SAMPLE);
-        System.out.println(NBT.fromJson(JSON_SAMPLE).equals(clone));
+        jsonTest();
+    }
+
+    private static void jsonTest() throws IOException {
+        CompoundTag root = new CompoundTag("root");
+
+        root.putInt("primitive", 3);
+        root.putIntArray("array", new int[]{0, 1, 2, 3});
+
+        List<StringTag> list = new LinkedList<>();
+        list.add(new StringTag("duck"));
+        list.add(new StringTag("goose"));
+
+        root.putList("list", list);
+        root.put("compound", new CompoundTag());
+
+        NBT.toJson(root, JSON_SAMPLE);
+        System.out.println(NBT.fromJson(JSON_SAMPLE).equals(root));
     }
 }
