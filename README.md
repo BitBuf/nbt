@@ -84,7 +84,7 @@ Every tag in NBT JSON is represented as an object containing the following prope
 
 The [JSON NBT sample](samples/sample.json) is documented below:
 
-```json lines
+```js
 { // root compound tag named "root"
   "type": 10, // compound tag type ID
   "name": "root",
