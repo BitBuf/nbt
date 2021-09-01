@@ -16,61 +16,85 @@ import dev.dewy.nbt.tags.primitive.*;
  */
 public enum TagType {
     /**
+     * ID: 1
+     *
      * @see ByteTag
      */
     BYTE(1),
 
     /**
+     * ID: 2
+     *
      * @see ShortTag
      */
     SHORT(2),
 
     /**
+     * ID: 3
+     *
      * @see IntTag
      */
     INT(3),
 
     /**
+     * ID: 4
+     *
      * @see LongTag
      */
     LONG(4),
 
     /**
+     * ID: 5
+     *
      * @see FloatTag
      */
     FLOAT(5),
 
     /**
+     * ID: 6
+     *
      * @see DoubleTag
      */
     DOUBLE(6),
 
     /**
+     * ID: 7
+     *
      * @see ByteArrayTag
      */
     BYTE_ARRAY(7),
 
     /**
+     * ID: 8
+     *
      * @see StringTag
      */
     STRING(8),
 
     /**
+     * ID: 9
+     *
      * @see ListTag
      */
     LIST(9),
 
     /**
+     * ID: 10
+     *
      * @see CompoundTag
      */
     COMPOUND(10),
 
     /**
+     * ID: 11
+     *
      * @see IntArrayTag
      */
     INT_ARRAY(11),
 
     /**
+     * ID: 12
+     *
      * @see LongArrayTag
      */
     LONG_ARRAY(12);

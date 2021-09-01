@@ -103,6 +103,13 @@ public class Nbt {
         this.toStream(compound, dos);
     }
 
+    /**
+     * Serializes the given root {@link CompoundTag} to a JSON {@link File}.
+     *
+     * @param compound the NBT structure to serialize to JSON, contained within a {@link CompoundTag}.
+     * @param file the JSON file to write to.
+     * @throws IOException if any I/O error occurs.
+     */
     public void toJson(@NonNull CompoundTag compound, @NonNull File file) throws IOException {
         @Cleanup FileWriter writer = new FileWriter(file);
 
@@ -175,6 +182,13 @@ public class Nbt {
         return this.fromStream(in);
     }
 
+    /**
+     * Deserializes an NBT data structure (root {@link CompoundTag}) from a JSON {@link File}.
+     *
+     * @param file the JSON file to read from.
+     * @return the root {@link CompoundTag} deserialized from the JSON file.
+     * @throws IOException if any I/O error occurs.
+     */
     public CompoundTag fromJson(@NonNull File file) throws IOException {
         @Cleanup FileReader reader = new FileReader(file);
 
