@@ -53,7 +53,7 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.dewy:nbt:1.4.0"
+    implementation "dev.dewy:nbt:1.4.1"
 }
 ```
 
