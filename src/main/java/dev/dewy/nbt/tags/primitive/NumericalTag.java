@@ -1,7 +1,7 @@
 package dev.dewy.nbt.tags.primitive;
 
-import dev.dewy.nbt.api.json.JsonSerializable;
 import dev.dewy.nbt.api.Tag;
+import dev.dewy.nbt.api.json.JsonSerializable;
 
 /**
  * An abstract superclass of all NBT tags representing numeric values that can be converted to the primitive types.

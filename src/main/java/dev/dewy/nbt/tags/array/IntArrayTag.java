@@ -14,7 +14,10 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  * The int array tag (type ID 11) is used for storing {@code int[]} arrays in NBT structures.
@@ -81,7 +84,7 @@ public class IntArrayTag extends ArrayTag<Integer> {
     public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeInt(this.value.length);
 
-        for (int i : this.value) {
+        for (int i : this) {
             output.writeInt(i);
         }
     }
@@ -107,7 +110,7 @@ public class IntArrayTag extends ArrayTag<Integer> {
             json.addProperty("name", this.getName());
         }
 
-        for (int i : this.value) {
+        for (int i : this) {
             array.add(i);
         }
 
@@ -166,6 +169,21 @@ public class IntArrayTag extends ArrayTag<Integer> {
     @Override
     public void clear() {
         this.value = new int[0];
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return Arrays.asList(ArrayUtils.toObject(this.value)).iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Integer> action) {
+        Arrays.asList(ArrayUtils.toObject(this.value)).forEach(action);
+    }
+
+    @Override
+    public Spliterator<Integer> spliterator() {
+        return Arrays.asList(ArrayUtils.toObject(this.value)).spliterator();
     }
 
     @Override

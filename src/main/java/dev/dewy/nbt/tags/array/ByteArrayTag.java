@@ -14,7 +14,10 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  * The byte array tag (type ID 7) is used for storing {@code byte[]} arrays in NBT structures.
@@ -103,7 +106,7 @@ public class ByteArrayTag extends ArrayTag<Byte> {
             json.addProperty("name", this.getName());
         }
 
-        for (byte b : this.value) {
+        for (byte b : this) {
             array.add(b);
         }
 
@@ -162,6 +165,21 @@ public class ByteArrayTag extends ArrayTag<Byte> {
     @Override
     public void clear() {
         this.value = new byte[0];
+    }
+
+    @Override
+    public Iterator<Byte> iterator() {
+        return Arrays.asList(ArrayUtils.toObject(this.value)).iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Byte> action) {
+        Arrays.asList(ArrayUtils.toObject(this.value)).forEach(action);
+    }
+
+    @Override
+    public Spliterator<Byte> spliterator() {
+        return Arrays.asList(ArrayUtils.toObject(this.value)).spliterator();
     }
 
     @Override

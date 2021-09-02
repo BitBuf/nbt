@@ -14,7 +14,10 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  * The long array tag (type ID 12) is used for storing {@code long[]} arrays in NBT structures.
@@ -81,7 +84,7 @@ public class LongArrayTag extends ArrayTag<Long> {
     public void write(DataOutput output, int depth, TagTypeRegistry registry) throws IOException {
         output.writeInt(this.value.length);
 
-        for (long l : this.value) {
+        for (long l : this) {
             output.writeLong(l);
         }
     }
@@ -107,7 +110,7 @@ public class LongArrayTag extends ArrayTag<Long> {
             json.addProperty("name", this.getName());
         }
 
-        for (long l : this.value) {
+        for (long l : this) {
             array.add(l);
         }
 
@@ -166,6 +169,21 @@ public class LongArrayTag extends ArrayTag<Long> {
     @Override
     public void clear() {
         this.value = new long[0];
+    }
+
+    @Override
+    public Iterator<Long> iterator() {
+        return Arrays.asList(ArrayUtils.toObject(this.value)).iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Long> action) {
+        Arrays.asList(ArrayUtils.toObject(this.value)).forEach(action);
+    }
+
+    @Override
+    public Spliterator<Long> spliterator() {
+        return Arrays.asList(ArrayUtils.toObject(this.value)).spliterator();
     }
 
     @Override

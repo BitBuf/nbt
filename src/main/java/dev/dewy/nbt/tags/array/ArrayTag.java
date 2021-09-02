@@ -1,7 +1,7 @@
 package dev.dewy.nbt.tags.array;
 
-import dev.dewy.nbt.api.json.JsonSerializable;
 import dev.dewy.nbt.api.Tag;
+import dev.dewy.nbt.api.json.JsonSerializable;
 
 /**
  * Abstract class for implementing NBT array tags.
@@ -9,7 +9,7 @@ import dev.dewy.nbt.api.Tag;
  * @param <T> the type held in the array.
  * @author dewy
  */
-public abstract class ArrayTag<T> extends Tag implements JsonSerializable {
+public abstract class ArrayTag<T> extends Tag implements JsonSerializable, Iterable<T> {
     /**
      * Returns the number of elements in this array tag.
      *
