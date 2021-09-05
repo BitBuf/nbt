@@ -41,7 +41,7 @@ public class StringUtils {
     }
 
     public static String multiplyIndent(int by, SnbtConfig config) {
-        return new String(new char[by]).replace("\0", config.getIndent());
+        return new String(new char[by * config.getIndentSpaces()]).replace("\0", " ");
     }
 
     public static String[] getMatches(Pattern regex, String in) {

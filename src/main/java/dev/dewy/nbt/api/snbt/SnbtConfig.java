@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class SnbtConfig {
     private boolean prettyPrint;
-    private String indent = "    ";
+    private int indentSpaces = 4;
     private int inlineThreshold = 100;
 }
