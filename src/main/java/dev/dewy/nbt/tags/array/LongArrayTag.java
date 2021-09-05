@@ -3,8 +3,10 @@ package dev.dewy.nbt.tags.array;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.dewy.nbt.api.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
 import dev.dewy.nbt.tags.TagType;
 import dev.dewy.nbt.tags.primitive.LongTag;
+import dev.dewy.nbt.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -133,6 +135,55 @@ public class LongArrayTag extends ArrayTag<Long> {
 
         for (int i = 0; i < array.size(); i++) {
             this.value[i] = array.get(i).getAsLong();
+        }
+
+        return this;
+    }
+
+    @Override
+    public String toSnbt(int depth, TagTypeRegistry registry, SnbtConfig config) {
+        StringBuilder sb = new StringBuilder("[L;");
+
+        if (config.isPrettyPrint()) {
+            if (this.value.length < config.getInlineThreshold()) {
+                sb.append('\n').append(StringUtils.multiplyIndent(depth + 1, config));
+            } else {
+                sb.append(' ');
+            }
+        }
+
+        for (int i = 0; i < this.value.length; ++i) {
+            if (i != 0) {
+                if (config.isPrettyPrint()) {
+                    if (this.value.length < config.getInlineThreshold()) {
+                        sb.append(",\n").append(StringUtils.multiplyIndent(depth + 1, config));
+                    } else {
+                        sb.append(", ");
+                    }
+                } else {
+                    sb.append(',');
+                }
+            }
+
+            sb.append(this.value[i]).append('L');
+        }
+
+        if (config.isPrettyPrint() && this.value.length < config.getInlineThreshold()) {
+            sb.append("\n").append(StringUtils.multiplyIndent(depth , config)).append(']');
+        } else {
+            sb.append(']');
+        }
+
+        return sb.toString();
+    }
+
+    @Override
+    public LongArrayTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
+        String[] elements = StringUtils.getMatches(ArrayTag.NUMBER_PATTERN, snbt);
+        this.value = new long[elements.length];
+
+        for (int i = 0; i < this.value.length; i++) {
+            this.value[i] = Long.parseLong(elements[i]);
         }
 
         return this;

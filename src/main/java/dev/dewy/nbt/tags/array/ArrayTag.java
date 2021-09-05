@@ -2,6 +2,9 @@ package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.api.json.JsonSerializable;
+import dev.dewy.nbt.api.snbt.SnbtSerializable;
+
+import java.util.regex.Pattern;
 
 /**
  * Abstract class for implementing NBT array tags.
@@ -9,7 +12,9 @@ import dev.dewy.nbt.api.json.JsonSerializable;
  * @param <T> the type held in the array.
  * @author dewy
  */
-public abstract class ArrayTag<T> extends Tag implements JsonSerializable, Iterable<T> {
+public abstract class ArrayTag<T> extends Tag implements SnbtSerializable, JsonSerializable, Iterable<T> {
+    public static final Pattern NUMBER_PATTERN = Pattern.compile("[-0-9]+");
+
     /**
      * Returns the number of elements in this array tag.
      *

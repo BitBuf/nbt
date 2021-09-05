@@ -6,11 +6,14 @@ import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.api.json.JsonSerializable;
 import dev.dewy.nbt.api.registry.TagTypeRegistry;
 import dev.dewy.nbt.api.registry.TagTypeRegistryException;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
+import dev.dewy.nbt.api.snbt.SnbtSerializable;
 import dev.dewy.nbt.tags.TagType;
 import dev.dewy.nbt.tags.array.ByteArrayTag;
 import dev.dewy.nbt.tags.array.IntArrayTag;
 import dev.dewy.nbt.tags.array.LongArrayTag;
 import dev.dewy.nbt.tags.primitive.*;
+import dev.dewy.nbt.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
@@ -27,7 +30,7 @@ import java.util.function.Consumer;
  * @author dewy
  */
 @AllArgsConstructor
-public class CompoundTag extends Tag implements JsonSerializable, Iterable<Tag> {
+public class CompoundTag extends Tag implements SnbtSerializable, JsonSerializable, Iterable<Tag> {
     private @NonNull Map<String, Tag> value;
 
     /**
@@ -193,6 +196,58 @@ public class CompoundTag extends Tag implements JsonSerializable, Iterable<Tag> 
 
         this.value = tags;
 
+        return this;
+    }
+
+    @Override
+    public String toSnbt(int depth, TagTypeRegistry registry, SnbtConfig config) {
+        if (this.value.isEmpty()) {
+            return "{}";
+        }
+
+        StringBuilder sb = new StringBuilder("{");
+
+        if (config.isPrettyPrint()) {
+            sb.append('\n').append(StringUtils.multiplyIndent(depth + 1, config));
+        }
+
+        boolean first = true;
+        for (Tag tag : this) {
+            if (!first) {
+                if (config.isPrettyPrint()) {
+                    sb.append(",\n").append(StringUtils.multiplyIndent(depth + 1, config));
+                } else {
+                    sb.append(',');
+                }
+            }
+
+            sb.append(StringUtils.escapeSnbt(tag.getName()));
+
+            if (config.isPrettyPrint()) {
+                sb.append(": ");
+            } else {
+                sb.append(':');
+            }
+
+            sb.append(((SnbtSerializable) tag).toSnbt(depth + 1, registry, config));
+
+            if (first) {
+                first = false;
+            }
+        }
+
+        if (config.isPrettyPrint()) {
+            sb.append("\n").append(StringUtils.multiplyIndent(depth , config)).append('}');
+        } else {
+            sb.append('}');
+        }
+
+        return sb.toString();
+    }
+
+    // TODO: finish
+    @Override
+    public CompoundTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
         return this;
     }
 

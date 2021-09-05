@@ -7,7 +7,10 @@ import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.api.json.JsonSerializable;
 import dev.dewy.nbt.api.registry.TagTypeRegistry;
 import dev.dewy.nbt.api.registry.TagTypeRegistryException;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
+import dev.dewy.nbt.api.snbt.SnbtSerializable;
 import dev.dewy.nbt.tags.TagType;
+import dev.dewy.nbt.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
@@ -23,7 +26,7 @@ import java.util.function.Consumer;
  * @author dewy
  */
 @AllArgsConstructor
-public class ListTag<T extends Tag> extends Tag implements JsonSerializable, Iterable<T> {
+public class ListTag<T extends Tag> extends Tag implements SnbtSerializable, JsonSerializable, Iterable<T> {
     private @NonNull List<T> value;
     private byte type;
 
@@ -147,6 +150,41 @@ public class ListTag<T extends Tag> extends Tag implements JsonSerializable, Ite
 
         this.value = tags;
 
+        return this;
+    }
+
+    @Override
+    public String toSnbt(int depth, TagTypeRegistry registry, SnbtConfig config) {
+        StringBuilder sb = new StringBuilder("[");
+
+        if (config.isPrettyPrint()) {
+            sb.append('\n').append(StringUtils.multiplyIndent(depth + 1, config));
+        }
+
+        for (int i = 0; i < this.value.size(); ++i) {
+            if (i != 0) {
+                if (config.isPrettyPrint()) {
+                    sb.append(",\n").append(StringUtils.multiplyIndent(depth + 1, config));
+                } else {
+                    sb.append(',');
+                }
+            }
+
+            sb.append(((SnbtSerializable) this.value.get(i)).toSnbt(depth + 1, registry, config));
+        }
+
+        if (config.isPrettyPrint()) {
+            sb.append("\n").append(StringUtils.multiplyIndent(depth , config)).append(']');
+        } else {
+            sb.append(']');
+        }
+
+        return sb.toString();
+    }
+
+    // TODO: finish
+    @Override
+    public ListTag<T> fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
         return this;
     }
 

@@ -2,6 +2,7 @@ package dev.dewy.nbt.tags.primitive;
 
 import com.google.gson.JsonObject;
 import dev.dewy.nbt.api.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
 import dev.dewy.nbt.tags.TagType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -58,6 +59,18 @@ public class DoubleTag extends NumericalTag<Double> {
     @Override
     public DoubleTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readDouble();
+
+        return this;
+    }
+
+    @Override
+    public String toSnbt(int depth, TagTypeRegistry registry, SnbtConfig config) {
+        return this.value + "d";
+    }
+
+    @Override
+    public DoubleTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
+        this.value = Double.parseDouble(snbt.substring(0, snbt.length() - 1));
 
         return this;
     }

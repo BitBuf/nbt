@@ -4,7 +4,10 @@ import com.google.gson.JsonObject;
 import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.api.json.JsonSerializable;
 import dev.dewy.nbt.api.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
+import dev.dewy.nbt.api.snbt.SnbtSerializable;
 import dev.dewy.nbt.tags.TagType;
+import dev.dewy.nbt.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -21,7 +24,7 @@ import java.util.Objects;
  */
 @NoArgsConstructor
 @AllArgsConstructor
-public class StringTag extends Tag implements JsonSerializable {
+public class StringTag extends Tag implements SnbtSerializable, JsonSerializable {
     private @NonNull String value;
 
     /**
@@ -62,6 +65,24 @@ public class StringTag extends Tag implements JsonSerializable {
     @Override
     public StringTag read(DataInput input, int depth, TagTypeRegistry registry) throws IOException {
         this.value = input.readUTF();
+
+        return this;
+    }
+
+    @Override
+    public String toSnbt(int depth, TagTypeRegistry registry, SnbtConfig config) {
+        return StringUtils.escapeSnbt(this.value);
+    }
+
+    @Override
+    public StringTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
+        if (snbt.charAt(0) == '"') {
+            this.value = snbt.substring(1, snbt.length() - 1).replaceAll("\\\\\"", "\"");
+        } else if (snbt.charAt(0) == '\'') {
+            this.value = snbt.substring(1, snbt.length() - 1).replaceAll("\\\\'", "'");
+        } else {
+            this.value = snbt;
+        }
 
         return this;
     }
