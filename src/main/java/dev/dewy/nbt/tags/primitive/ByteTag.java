@@ -89,13 +89,6 @@ public class ByteTag extends NumericalTag<Byte> {
     }
 
     @Override
-    public ByteTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        this.value = Byte.parseByte(snbt.substring(0, snbt.length() - 1));
-
-        return this;
-    }
-
-    @Override
     public JsonObject toJson(int depth, TagTypeRegistry registry) throws IOException {
         JsonObject json = new JsonObject();
         json.addProperty("type", this.getTypeId());

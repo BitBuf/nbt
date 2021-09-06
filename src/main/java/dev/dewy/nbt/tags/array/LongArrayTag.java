@@ -178,18 +178,6 @@ public class LongArrayTag extends ArrayTag<Long> {
     }
 
     @Override
-    public LongArrayTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        String[] elements = StringUtils.getMatches(ArrayTag.NUMBER_PATTERN, snbt);
-        this.value = new long[elements.length];
-
-        for (int i = 0; i < this.value.length; i++) {
-            this.value[i] = Long.parseLong(elements[i]);
-        }
-
-        return this;
-    }
-
-    @Override
     public int size() {
         return this.value.length;
     }

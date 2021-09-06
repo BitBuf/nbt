@@ -107,6 +107,9 @@ public class NbtTest {
 
         // nbt to json and back: see readme for NBT JSON format documentation
         jsonTest();
+
+        // displaying as SNBT
+        System.out.println(NBT.toSnbt(root));
     }
 
     private static void jsonTest() throws IOException {

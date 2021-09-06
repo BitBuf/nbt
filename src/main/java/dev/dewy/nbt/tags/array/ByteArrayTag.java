@@ -174,18 +174,6 @@ public class ByteArrayTag extends ArrayTag<Byte> {
     }
 
     @Override
-    public ByteArrayTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        String[] elements = StringUtils.getMatches(ArrayTag.NUMBER_PATTERN, snbt);
-        this.value = new byte[elements.length];
-
-        for (int i = 0; i < this.value.length; i++) {
-            this.value[i] = Byte.parseByte(elements[i]);
-        }
-
-        return this;
-    }
-
-    @Override
     public int size() {
         return this.value.length;
     }

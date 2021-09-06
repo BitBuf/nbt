@@ -178,18 +178,6 @@ public class IntArrayTag extends ArrayTag<Integer> {
     }
 
     @Override
-    public IntArrayTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        String[] elements = StringUtils.getMatches(ArrayTag.NUMBER_PATTERN, snbt);
-        this.value = new int[elements.length];
-
-        for (int i = 0; i < this.value.length; i++) {
-            this.value[i] = Integer.parseInt(elements[i]);
-        }
-
-        return this;
-    }
-
-    @Override
     public int size() {
         return this.value.length;
     }

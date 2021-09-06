@@ -245,12 +245,6 @@ public class CompoundTag extends Tag implements SnbtSerializable, JsonSerializab
         return sb.toString();
     }
 
-    // TODO: finish
-    @Override
-    public CompoundTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        return this;
-    }
-
     /**
      * Returns the number of entries in this compound tag.
      *

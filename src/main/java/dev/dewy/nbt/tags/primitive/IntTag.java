@@ -69,13 +69,6 @@ public class IntTag extends NumericalTag<Integer> {
     }
 
     @Override
-    public IntTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        this.value = Integer.parseInt(snbt);
-
-        return this;
-    }
-
-    @Override
     public JsonObject toJson(int depth, TagTypeRegistry registry) {
         JsonObject json = new JsonObject();
         json.addProperty("type", this.getTypeId());

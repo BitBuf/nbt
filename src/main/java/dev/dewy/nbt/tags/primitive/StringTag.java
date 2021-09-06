@@ -75,19 +75,6 @@ public class StringTag extends Tag implements SnbtSerializable, JsonSerializable
     }
 
     @Override
-    public StringTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        if (snbt.charAt(0) == '"') {
-            this.value = snbt.substring(1, snbt.length() - 1).replaceAll("\\\\\"", "\"");
-        } else if (snbt.charAt(0) == '\'') {
-            this.value = snbt.substring(1, snbt.length() - 1).replaceAll("\\\\'", "'");
-        } else {
-            this.value = snbt;
-        }
-
-        return this;
-    }
-
-    @Override
     public JsonObject toJson(int depth, TagTypeRegistry registry) {
         JsonObject json = new JsonObject();
         json.addProperty("type", this.getTypeId());

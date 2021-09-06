@@ -69,13 +69,6 @@ public class LongTag extends NumericalTag<Long> {
     }
 
     @Override
-    public LongTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        this.value = Long.parseLong(snbt.substring(0, snbt.length() - 1));
-
-        return this;
-    }
-
-    @Override
     public JsonObject toJson(int depth, TagTypeRegistry registry) {
         JsonObject json = new JsonObject();
         json.addProperty("type", this.getTypeId());

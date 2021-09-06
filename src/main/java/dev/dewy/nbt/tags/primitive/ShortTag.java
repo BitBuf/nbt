@@ -89,13 +89,6 @@ public class ShortTag extends NumericalTag<Short> {
     }
 
     @Override
-    public ShortTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        this.value = Short.parseShort(snbt.substring(0, snbt.length() - 1));
-
-        return this;
-    }
-
-    @Override
     public JsonObject toJson(int depth, TagTypeRegistry registry) {
         JsonObject json = new JsonObject();
         json.addProperty("type", this.getTypeId());

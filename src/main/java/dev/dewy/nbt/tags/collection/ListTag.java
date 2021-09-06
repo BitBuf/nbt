@@ -182,12 +182,6 @@ public class ListTag<T extends Tag> extends Tag implements SnbtSerializable, Jso
         return sb.toString();
     }
 
-    // TODO: finish
-    @Override
-    public ListTag<T> fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        return this;
-    }
-
     @Override
     public JsonObject toJson(int depth, TagTypeRegistry registry) throws IOException {
         if (depth > 512) {

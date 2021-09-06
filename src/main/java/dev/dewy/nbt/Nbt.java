@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import dev.dewy.nbt.api.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
 import dev.dewy.nbt.io.CompressionType;
 import dev.dewy.nbt.io.NbtReader;
 import dev.dewy.nbt.io.NbtWriter;
@@ -27,6 +28,7 @@ import java.util.zip.InflaterInputStream;
 public class Nbt {
     private @NonNull Gson gson;
     private @NonNull TagTypeRegistry typeRegistry;
+    private @NonNull SnbtConfig snbtConfig;
 
     private final @NonNull NbtWriter writer;
     private final @NonNull NbtReader reader;
@@ -39,17 +41,35 @@ public class Nbt {
     }
 
     /**
-     * Constructs an instance of this class using a given {@link TagTypeRegistry}.
+     * Constructs an instance of this class using a given {@link TagTypeRegistry}, with a default GSON instance.
      *
      * @param typeRegistry the tag type registry to be used, typically containing custom tag entries.
      */
     public Nbt(@NonNull TagTypeRegistry typeRegistry) {
-        this(typeRegistry, new GsonBuilder().setPrettyPrinting().create());
+        this(typeRegistry, new Gson());
     }
 
+    /**
+     * Constructs an instance of this class using a given {@link TagTypeRegistry}, with a default {@link SnbtConfig} instance.
+     *
+     * @param typeRegistry the tag type registry to be used, typically containing custom tag entries.
+     * @param gson the GSON instance to be used.
+     */
     public Nbt(@NonNull TagTypeRegistry typeRegistry, @NonNull Gson gson) {
+        this(typeRegistry, gson, new SnbtConfig());
+    }
+
+    /**
+     * Constructs an instance of this class using a given {@link TagTypeRegistry}, {@code Gson} and an {@link SnbtConfig}.
+     *
+     * @param typeRegistry the tag type registry to be used, typically containing custom tag entries.
+     * @param gson the GSON instance to be used.
+     * @param snbtConfig the SNBT config object to be used.
+     */
+    public Nbt(@NonNull TagTypeRegistry typeRegistry, @NonNull Gson gson, @NonNull SnbtConfig snbtConfig) {
         this.typeRegistry = typeRegistry;
         this.gson = gson;
+        this.snbtConfig = snbtConfig;
 
         this.writer = new NbtWriter(typeRegistry);
         this.reader = new NbtReader(typeRegistry);
@@ -101,6 +121,10 @@ public class Nbt {
         }
 
         this.toStream(compound, dos);
+    }
+
+    public String toSnbt(@NonNull CompoundTag compound) {
+        return compound.toSnbt(0, this.typeRegistry, new SnbtConfig());
     }
 
     /**
@@ -240,11 +264,39 @@ public class Nbt {
         this.reader.setTypeRegistry(typeRegistry);
     }
 
+    /**
+     * Returns the {@code Gson} currently in use by this instance.
+     *
+     * @return the {@code Gson} currently in use by this instance.
+     */
     public Gson getGson() {
         return gson;
     }
 
+    /**
+     * Sets the {@code Gson} currently in use by this instance.
+     *
+     * @param gson the new {@code Gson} to be set.
+     */
     public void setGson(@NonNull Gson gson) {
         this.gson = gson;
+    }
+
+    /**
+     * Returns the {@link SnbtConfig} currently in use by this instance.
+     *
+     * @return the {@link SnbtConfig} currently in use by this instance.
+     */
+    public SnbtConfig getSnbtConfig() {
+        return snbtConfig;
+    }
+
+    /**
+     * Sets the {@link SnbtConfig} currently in use by this instance.
+     *
+     * @param snbtConfig the new {@link SnbtConfig} to be set.
+     */
+    public void setSnbtConfig(@NonNull SnbtConfig snbtConfig) {
+        this.snbtConfig = snbtConfig;
     }
 }

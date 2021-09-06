@@ -69,13 +69,6 @@ public class FloatTag extends NumericalTag<Float> {
     }
 
     @Override
-    public FloatTag fromSnbt(String snbt, int depth, TagTypeRegistry registry, SnbtConfig config) {
-        this.value = Float.parseFloat(snbt.substring(0, snbt.length() - 1));
-
-        return this;
-    }
-
-    @Override
     public JsonObject toJson(int depth, TagTypeRegistry registry) {
         JsonObject json = new JsonObject();
         json.addProperty("type", this.getTypeId());
