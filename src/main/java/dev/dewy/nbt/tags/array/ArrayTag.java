@@ -2,6 +2,8 @@ package dev.dewy.nbt.tags.array;
 
 import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.api.json.JsonSerializable;
+import dev.dewy.nbt.api.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
 import dev.dewy.nbt.api.snbt.SnbtSerializable;
 
 import java.util.regex.Pattern;
@@ -71,4 +73,9 @@ public abstract class ArrayTag<T> extends Tag implements SnbtSerializable, JsonS
      * Removes all the elements from this array tag. The array tag will be empty after this call returns.
      */
     public abstract void clear();
+
+    @Override
+    public String toString() {
+        return this.toSnbt(0, new TagTypeRegistry(), new SnbtConfig());
+    }
 }

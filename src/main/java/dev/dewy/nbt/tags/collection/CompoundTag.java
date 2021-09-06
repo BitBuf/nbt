@@ -525,6 +525,11 @@ public class CompoundTag extends Tag implements SnbtSerializable, JsonSerializab
     }
 
     @Override
+    public String toString() {
+        return this.toSnbt(0, new TagTypeRegistry(), new SnbtConfig());
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

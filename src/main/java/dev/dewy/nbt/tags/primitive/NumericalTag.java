@@ -2,6 +2,8 @@ package dev.dewy.nbt.tags.primitive;
 
 import dev.dewy.nbt.api.Tag;
 import dev.dewy.nbt.api.json.JsonSerializable;
+import dev.dewy.nbt.api.registry.TagTypeRegistry;
+import dev.dewy.nbt.api.snbt.SnbtConfig;
 import dev.dewy.nbt.api.snbt.SnbtSerializable;
 
 /**
@@ -66,5 +68,10 @@ public abstract class NumericalTag<T extends Number> extends Tag implements Snbt
      */
     public double doubleValue() {
         return this.getValue().doubleValue();
+    }
+
+    @Override
+    public String toString() {
+        return this.toSnbt(0, new TagTypeRegistry(), new SnbtConfig());
     }
 }

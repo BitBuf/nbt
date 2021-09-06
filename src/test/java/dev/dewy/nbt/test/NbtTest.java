@@ -109,7 +109,7 @@ public class NbtTest {
         jsonTest();
 
         // displaying as SNBT
-        System.out.println(NBT.toSnbt(root));
+        System.out.println(root);
     }
 
     private static void jsonTest() throws IOException {
