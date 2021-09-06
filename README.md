@@ -53,11 +53,11 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.dewy:nbt:1.4.1"
+    implementation "dev.dewy:nbt:1.5.0"
 }
 ```
 
-#### NBTReader Sample: Base64
+#### `Nbt` Sample: Base64
 
 The [Nbt](src/main/java/dev/dewy/nbt/Nbt.java) class can be used to easily (de)serialize NBT data:
 
@@ -73,6 +73,17 @@ System.out.println(test.getInt("test").getValue()); // 0
 ```
 
 See the [NbtTest](src/test/java/dev/dewy/nbt/test/NbtTest.java) class for full sample usage.
+
+
+#### SNBT Format
+
+SNBT (Stringified NBT) is a format defined by Mojang used to record NBT tags as readable strings, used in command blocks.
+
+The [JSON NBT sample](samples/sample.json) encoded as SNBT is as follows:
+
+```text
+{"primitive":3,"array":[I;0,1,2,3],"list":["duck","goose"],"compound":{}}
+```
 
 #### NBT JSON Format
 
@@ -135,11 +146,7 @@ The [JSON NBT sample](samples/sample.json) is documented below:
 - Supports all Java edition NBT tags (including long array)
 - Intuitive and flexible reading and writing functionality
 - JSON (De)serialization
-
-#### Planned
-
-- SNBT (Stringified NBT) support
-- ENBT (Extended NBT) format (missing data types e.g., double array) support
+- SNBT Serialization
 
 ### Javadocs
 
