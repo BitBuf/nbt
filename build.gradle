@@ -9,10 +9,16 @@ version "1.4.1"
 
 repositories {
     mavenCentral()
+
+    maven {
+        name "mojang"
+        url "https://libraries.minecraft.net/"
+    }
 }
 
 dependencies {
     implementation "org.apache.commons:commons-lang3:$lang3"
+    implementation "com.mojang:brigadier:$brigadier"
     implementation "com.google.code.gson:gson:$gson"
 
     compileOnly "org.projectlombok:lombok:$lombok"
