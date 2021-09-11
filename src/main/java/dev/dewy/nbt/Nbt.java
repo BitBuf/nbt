@@ -1,7 +1,6 @@
 package dev.dewy.nbt;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import dev.dewy.nbt.api.registry.TagTypeRegistry;
 import dev.dewy.nbt.api.snbt.SnbtConfig;
@@ -123,8 +122,14 @@ public class Nbt {
         this.toStream(compound, dos);
     }
 
+    /**
+     * Serializes the given root {@link CompoundTag} to a SNBT (Stringified NBT).
+     *
+     * @param compound the NBT structure to serialize to SNBT, contained within a {@link CompoundTag}.
+     * @return the serialized SNBT string.
+     */
     public String toSnbt(@NonNull CompoundTag compound) {
-        return compound.toSnbt(0, this.typeRegistry, new SnbtConfig());
+        return compound.toSnbt(0, this.typeRegistry, this.snbtConfig);
     }
 
     /**
