@@ -154,7 +154,7 @@ public class Nbt {
      */
     public byte[] toByteArray(@NonNull CompoundTag compound) throws IOException {
         @Cleanup ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        @Cleanup DataOutputStream w = new DataOutputStream(new BufferedOutputStream(baos));
+        @Cleanup DataOutputStream w = new DataOutputStream(baos);
 
         this.toStream(compound, w);
 
