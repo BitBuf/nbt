@@ -194,7 +194,8 @@ public class Nbt {
         @Cleanup BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
         @Cleanup DataInputStream in = null;
 
-        switch (CompressionType.getCompression(new FileInputStream(file))) {
+        @Cleanup FileInputStream fis = new FileInputStream(file);
+        switch (CompressionType.getCompression(fis)) {
             case NONE:
                 in = new DataInputStream(bis);
                 break;
